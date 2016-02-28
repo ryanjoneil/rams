@@ -10,8 +10,11 @@ class TestVariable < Test::Unit::TestCase
   end
 
   def test_variable_hash
-    x = RAMS::Variable.new 'x'
-    assert_equal x.hash, x.object_id
+    x1 = RAMS::Variable.new
+    x2 = RAMS::Variable.new
+    assert_equal x1.hash, x1.object_id
+    assert_equal x2.hash, x2.object_id
+    assert_not_equal x1.hash, x2.hash
   end
 
   def test_variable_add_variable
@@ -28,8 +31,19 @@ class TestVariable < Test::Unit::TestCase
     e = x + 2.5
     assert_equal 1.0, e.coefficients[x]
     assert_equal 2.5, e.constant
+  end
 
-    # TODO:
-    # e = 3.1 + x
+  def test_float_add_variable
+    x = RAMS::Variable.new
+    e = 2.5 + x
+    assert_equal 1.0, e.coefficients[x]
+    assert_equal 2.5, e.constant
+  end
+
+  def test_fixnum_add_variable
+    x = RAMS::Variable.new
+    e = 2 + x
+    assert_equal 1.0, e.coefficients[x]
+    assert_equal 2, e.constant
   end
 end

@@ -58,3 +58,19 @@ module RAMS
     end
   end
 end
+
+class Fixnum
+  alias_method :old_add, :+
+  def +(other)
+    return other + self if other.kind_of? RAMS::Posynomial
+    self.old_add other
+  end
+end
+
+class Float
+  alias_method :old_add, :+
+  def +(other)
+    return other + self if other.kind_of? RAMS::Posynomial
+    self.old_add other
+  end
+end
