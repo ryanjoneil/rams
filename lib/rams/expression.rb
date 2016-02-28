@@ -11,7 +11,7 @@ module RAMS
     # TODO: unary -, ^, **, ...
 
     def +(other)
-      return Posynomial.new(coefficients, constant + other) if other.kind_of? Numeric
+      return Posynomial.new(coefficients, constant + other) if other.is_a? Numeric
       coeff = coefficients.dup
       other.coefficients.each do |m, c|
         coeff[m] ||= 0.0
@@ -21,7 +21,7 @@ module RAMS
     end
 
     def -(other)
-      return Posynomial.new(coefficients, constant - other) if other.kind_of? Numeric
+      return Posynomial.new(coefficients, constant - other) if other.is_a? Numeric
       coeff = coefficients.dup
       other.coefficients.each do |m, c|
         coeff[m] ||= 0.0
@@ -48,7 +48,7 @@ module RAMS
     end
 
     def hash
-      variables.map { |id| [id, self.exponents[id]] }.hash
+      variables.map { |id| [id, exponents[id]] }.hash
     end
 
     private
@@ -59,18 +59,20 @@ module RAMS
   end
 end
 
+# TODO
 class Fixnum
-  alias_method :old_add, :+
+  alias old_add +
   def +(other)
-    return other + self if other.kind_of? RAMS::Posynomial
-    self.old_add other
+    return other + self if other.is_a? RAMS::Posynomial
+    old_add other
   end
 end
 
+# TODO
 class Float
-  alias_method :old_add, :+
+  alias old_add +
   def +(other)
-    return other + self if other.kind_of? RAMS::Posynomial
-    self.old_add other
+    return other + self if other.is_a? RAMS::Posynomial
+    old_add other
   end
 end
