@@ -4,30 +4,25 @@ module RAMS
     attr_reader :coefficients, :constant
 
     def initialize(coefficients = {}, constant = 0.0)
-      @coefficients = coefficients
+      @coefficients = coefficients.dup
+      @coefficients.default = 0.0
       @constant = constant
     end
 
     # TODO: unary -, ^, **, ...
 
     def +(other)
-      return Posynomial.new(coefficients, constant + other) if other.is_a? Numeric
-      coeff = coefficients.dup
-      other.coefficients.each do |m, c|
-        coeff[m] ||= 0.0
-        coeff[m] += c
+      if other.is_a? Numeric
+        return Posynomial.new(coefficients, constant + other)
       end
-      Posynomial.new coeff, constant + other.constant
+      Posynomial.new add_coefficients(other), constant + other.constant
     end
 
     def -(other)
-      return Posynomial.new(coefficients, constant - other) if other.is_a? Numeric
-      coeff = coefficients.dup
-      other.coefficients.each do |m, c|
-        coeff[m] ||= 0.0
-        coeff[m] -= c
+      if other.is_a? Numeric
+        return Posynomial.new(coefficients, constant - other)
       end
-      Posynomial.new coeff, constant - other.constant
+      Posynomial.new add_coefficients(other, -1), constant - other.constant
     end
 
     def *(other)
@@ -36,6 +31,19 @@ module RAMS
     def /(other)
       # other must be a Monomial
     end
+
+    private
+
+    def merge_variables(other)
+      (coefficients.keys + other.coefficients.keys).uniq
+    end
+
+    def add_coefficients(other, sign = +1)
+      vars = merge_variables(other)
+      vars.map do |v|
+        [v, coefficients[v] + (sign * other.coefficients[v])]
+      end.to_h
+    end
   end
 
   # TODO
@@ -43,7 +51,9 @@ module RAMS
     attr_reader :exponents
 
     def initialize(exponents = {})
-      @exponents = exponents
+      @exponents = exponents.dup
+      @exponents.default = 0.0
+
       super({ self => 1.0 })
     end
 
