@@ -6,16 +6,17 @@ module RAMS
     def initialize(coefficients = {}, constant = 0.0)
       @coefficients = coefficients.dup
       @coefficients.default = 0.0
-      @constant = constant
+      @constant = constant.to_f
     end
 
-    # TODO: unary -, ^, **, ...
+    # TODO: ^, **, ...
     def -@
       Posynomial.new coefficients.map { |v, c| [v, -c] }.to_h, -constant
     end
 
     def +(other)
       if other.is_a? Numeric
+        return Posynomial.new({}, 0.0) unless other
         return Posynomial.new(coefficients, constant + other)
       end
       Posynomial.new add_coefficients(other), constant + other.constant
@@ -23,15 +24,27 @@ module RAMS
 
     def -(other)
       if other.is_a? Numeric
+        return Posynomial.new({}, 0.0) unless other
         return Posynomial.new(coefficients, constant - other)
       end
       Posynomial.new add_coefficients(other, -1), constant - other.constant
     end
 
     def *(other)
+      if other.is_a? Numeric
+        return Posynomial.new(coefficients.map do |v, c|
+          [v, c * other]
+        end.to_h, constant * other)
+      end
+      # Posynomial.new multiply_coefficients(other, -1) +
     end
 
     def /(other)
+      if other.is_a? Numeric
+        return Posynomial.new(coefficients.map do |v, c|
+          [v, c / other]
+        end.to_h, constant / other)
+      end
       # other must be a Monomial
     end
 
@@ -76,6 +89,8 @@ end
 class Fixnum
   alias old_add +
   alias old_sub -
+  alias old_multiply *
+  alias old_divide /
 
   def +(other)
     return other + self if other.is_a? RAMS::Posynomial
@@ -85,6 +100,16 @@ class Fixnum
   def -(other)
     return -other + self if other.is_a? RAMS::Posynomial
     old_sub other
+  end
+
+  def *(other)
+    return other * self if other.is_a? RAMS::Posynomial
+    old_multiply other
+  end
+
+  def /(other)
+    return other * (1.0 / self) if other.is_a? RAMS::Posynomial
+    old_divide other
   end
 end
 
@@ -92,6 +117,8 @@ end
 class Float
   alias old_add +
   alias old_sub -
+  alias old_multiply *
+  alias old_divide /
 
   def +(other)
     return other + self if other.is_a? RAMS::Posynomial
@@ -101,5 +128,15 @@ class Float
   def -(other)
     return -other + self if other.is_a? RAMS::Posynomial
     old_sub other
+  end
+
+  def *(other)
+    return other * self if other.is_a? RAMS::Posynomial
+    old_multiply other
+  end
+
+  def /(other)
+    return other * (1.0 / self) if other.is_a? RAMS::Posynomial
+    old_divide other
   end
 end
