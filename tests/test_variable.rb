@@ -12,8 +12,10 @@ class TestVariable < Test::Unit::TestCase
   def test_variable_hash
     x1 = RAMS::Variable.new
     x2 = RAMS::Variable.new
-    assert_equal x1.hash, x1.object_id
-    assert_equal x2.hash, x2.object_id
+    assert_equal x1.coefficients[x1], 1
+    assert_equal x1.coefficients[x2], 0
+    assert_equal x2.coefficients[x1], 0
+    assert_equal x2.coefficients[x2], 1
     assert_not_equal x1.hash, x2.hash
   end
 
