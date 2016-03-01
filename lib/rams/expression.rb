@@ -35,6 +35,7 @@ module RAMS
           [v, c * other]
         end.to_h, constant * other)
       end
+      fail NotImplementedError
     end
 
     def /(other)
@@ -43,6 +44,7 @@ module RAMS
           [v, c / other]
         end.to_h, constant / other)
       end
+      fail NotImplementedError
     end
 
     private
