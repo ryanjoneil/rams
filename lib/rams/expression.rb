@@ -10,6 +10,9 @@ module RAMS
     end
 
     # TODO: unary -, ^, **, ...
+    def -@
+      Posynomial.new coefficients.map { |v, c| [v, -c] }.to_h, -constant
+    end
 
     def +(other)
       if other.is_a? Numeric
@@ -72,17 +75,31 @@ end
 # TODO
 class Fixnum
   alias old_add +
+  alias old_sub -
+
   def +(other)
     return other + self if other.is_a? RAMS::Posynomial
     old_add other
+  end
+
+  def -(other)
+    return -other + self if other.is_a? RAMS::Posynomial
+    old_sub other
   end
 end
 
 # TODO
 class Float
   alias old_add +
+  alias old_sub -
+
   def +(other)
     return other + self if other.is_a? RAMS::Posynomial
     old_add other
+  end
+
+  def -(other)
+    return -other + self if other.is_a? RAMS::Posynomial
+    old_sub other
   end
 end
