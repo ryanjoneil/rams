@@ -2,7 +2,7 @@ require_relative 'expression'
 
 module RAMS
   # TODO
-  class Variable < Monomial
+  class Variable < Expression
     attr_reader :name
 
     def initialize(name = '')

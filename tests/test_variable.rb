@@ -6,7 +6,7 @@ class TestVariable < Test::Unit::TestCase
   def test_variable_initialize
     x = RAMS::Variable.new 'x'
     assert_equal 'x', x.name, 'x'
-    assert_equal 1.0, x.exponents[x]
+    assert_equal 1.0, x.coefficients[x]
   end
 
   def test_variable_hash
@@ -76,14 +76,6 @@ class TestVariable < Test::Unit::TestCase
     assert_equal(-1.0, e.coefficients[x])
     assert_equal 2, e.constant
   end
-
-  # def test_variable_times_variable
-  #   x1 = RAMS::Variable.new
-  #   x2 = RAMS::Variable.new
-  #   e = x1 * x2 * x1 * 3
-  #   assert_equal 3, e.coefficients[[x1, x2]]
-  #   assert_equal 0.0, e.constant
-  # end
 
   def test_float_times_variable
     x = RAMS::Variable.new
