@@ -1,5 +1,12 @@
+require_relative 'constraint'
+
 module RAMS
-  # TODO
+  # A RAMS::Expression is a dot product of variables, cofficients, and a
+  # constant offset:
+  #
+  #     3 * x1 + 1.5 * x3 - 4
+  #
+  # Expressions must be linear. They can be added and subtracted.
   class Expression
     attr_reader :coefficients, :constant
 
@@ -35,7 +42,7 @@ module RAMS
           [v, c * other]
         end.to_h, constant * other)
       end
-      fail NotImplementedError
+      raise NotImplementedError
     end
 
     def /(other)
@@ -44,7 +51,19 @@ module RAMS
           [v, c / other]
         end.to_h, constant / other)
       end
-      fail NotImplementedError
+      raise NotImplementedError
+    end
+
+    def <=(other)
+      RAMS::Constraint.new(lhs(other), :<=, rhs(other))
+    end
+
+    def ==(other)
+      RAMS::Constraint.new(lhs(other), :==, rhs(other))
+    end
+
+    def >=(other)
+      RAMS::Constraint.new(lhs(other), :>=, rhs(other))
     end
 
     private
@@ -58,6 +77,14 @@ module RAMS
       vars.map do |v|
         [v, coefficients[v] + (sign * other.coefficients[v])]
       end.to_h
+    end
+
+    def lhs(other)
+      (self - other).coefficients
+    end
+
+    def rhs(other)
+      other.constant - constant
     end
   end
 end

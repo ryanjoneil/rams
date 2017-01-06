@@ -1,4 +1,8 @@
-# TODO
+# Fixnums can be added to expressions or variables or multiplied
+# by them to create expressions:
+#
+#     4 - (3 * x)
+#     y / 2
 class Fixnum
   alias old_add +
   alias old_sub -
@@ -26,7 +30,7 @@ class Fixnum
   end
 end
 
-# TODO
+# Floats can be treated the same way as Fixnums.
 class Float
   alias old_add +
   alias old_sub -

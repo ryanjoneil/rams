@@ -1,7 +1,7 @@
 require './lib/rams.rb'
 require 'test/unit'
 
-# TODO
+# RAMS::Expression tests
 class TestExpression < Test::Unit::TestCase
   # rubocop:disable Metrics/AbcSize
   def test_add_expressions
