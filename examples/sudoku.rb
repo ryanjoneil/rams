@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/rams'
+require 'rams'
 
 # 0 indicates a cell value is not given
 problem = [
