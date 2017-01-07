@@ -27,6 +27,7 @@ module RAMS
     end
 
     def to_s
+      return to_s_binary if type == :binary
       "#{low.nil? ? '-inf' : low} <= #{name} <= #{high.nil? ? '+inf' : high}"
     end
 
@@ -34,6 +35,14 @@ module RAMS
 
     def self.next_id
       @next_id += 1
+    end
+
+    private
+
+    def to_s_binary
+      low_s = low.nil? ? 0.0 : [0.0, low].max
+      high_s = high.nil? ? 1.0 : [1.0, high].min
+      "#{low_s} <= #{name} <= #{high_s}"
     end
   end
 end

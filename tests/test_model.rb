@@ -7,7 +7,7 @@ class TestModel < Test::Unit::TestCase
   def test_simple
     m = RAMS::Model.new
 
-    x1 = m.variable
+    x1 = m.variable type: :binary
     x2 = m.variable
 
     m.constrain(x1 + x2 <= 1)

@@ -71,6 +71,10 @@ st
   #{constraints.values.map(&:to_s).join("\n  ")}
 bounds
   #{variables.values.map(&:to_s).join("\n  ")}
+general
+  #{variables.values.select { |v| v.type == :integer }.map(&:name).join("\n  ")}
+binary
+  #{variables.values.select { |v| v.type == :binary }.map(&:name).join("\n  ")}
 end
       LP
     end
