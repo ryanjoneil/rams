@@ -5,6 +5,7 @@ module RAMS
   #
   # lhs is a hash of variables to coefficients and rhs is a constant.
   # The sense is the sense of the inequality and must be closed.
+  #
   class Constraint
     attr_reader :id, :lhs, :sense, :rhs
 

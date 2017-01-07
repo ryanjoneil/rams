@@ -7,6 +7,7 @@ module RAMS
   #     3 * x1 + 1.5 * x3 - 4
   #
   # Expressions must be linear. They can be added and subtracted.
+  #
   class Expression
     attr_reader :coefficients, :constant
 

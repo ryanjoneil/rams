@@ -9,7 +9,21 @@ module RAMS
   #   * Constraints
   #   * An objective function and sense
   #
+  # An example of a simple model:
+  #
+  #   m = RAMS::Model.new
+  #   x1 = m.variable(type: :binary)
+  #   x2 = m.variable
+  #   m.constrain(x1 + x2 <= 1)
+  #
   # Models can be maximized or minimized by different solvers.
+  #
+  #   m.sense = :max
+  #   m.objective = (x1 + (2 * x2))
+  #   m.solver = :glpk
+  #   m.verbose = true
+  #   m.solve
+  #
   class Model
     attr_accessor :objective, :args, :verbose
     attr_reader :solver, :sense, :variables, :constraints
@@ -36,17 +50,13 @@ module RAMS
       @sense = sense
     end
 
-    def variable(low = 0.0, high = nil, type = CONTINUOUS)
-      v = Variable.new low, high, type
+    def variable(low: 0.0, high: nil, type: :continuous)
+      v = Variable.new low: low, high: high, type: type
       variables[v.name] = v
     end
 
     def constrain(constraint)
       constraints[constraint.name] = constraint
-    end
-
-    def <<(constraint)
-      constrain constraint
     end
 
     def solve

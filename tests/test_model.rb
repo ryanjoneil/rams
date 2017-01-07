@@ -10,8 +10,8 @@ class TestModel < Test::Unit::TestCase
     x1 = m.variable
     x2 = m.variable
 
-    m << (x1 + x2 <= 1)
-    m << (x2 >= 0.5)
+    m.constrain(x1 + x2 <= 1)
+    m.constrain(x2 >= 0.5)
 
     m.sense = :max
     m.objective = x1 + (2 * x2)

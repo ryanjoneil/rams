@@ -1,15 +1,18 @@
 require_relative 'expression'
 
 module RAMS
-  BINARY = :binary
-  CONTINUOUS = :continuous
-  INTEGER = :integer
-
-  # A Variable has bounds and a type.
+  # A Variable has bounds and a type. Names are created automatically.
+  #
+  #    RAMS::Variable.new                     # continuous, >= 0
+  #    RAMS::Variable.new low: nil            # continuous, unbounded
+  #    RAMS::Variable.new low: 1, high: 2.5   # continuous, >= 1, <= 2.5
+  #    RAMS::Variable.new type: :binary       # binary variable
+  #    RAMS::Variable.new type: :integer      # integer variable, >= 0
+  #
   class Variable < Expression
     attr_reader :id, :low, :high, :type
 
-    def initialize(low = 0.0, high = nil, type = CONTINUOUS)
+    def initialize(low: 0.0, high: nil, type: :continuous)
       @id = Variable.next_id
 
       @low = low
@@ -20,7 +23,7 @@ module RAMS
     end
 
     def name
-      "x#{id}"
+      "v#{id}"
     end
 
     def to_s
