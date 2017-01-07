@@ -6,9 +6,11 @@ module RAMS
   # lhs is a hash of variables to coefficients and rhs is a constant.
   # The sense is the sense of the inequality and must be closed.
   class Constraint
-    attr_reader :lhs, :sense, :rhs
+    attr_reader :id, :lhs, :sense, :rhs
 
     def initialize(lhs, sense, rhs)
+      @id = Variable.next_id
+
       @lhs = lhs.dup
       @sense = sense
       @rhs = rhs
@@ -16,9 +18,19 @@ module RAMS
       validate
     end
 
+    def name
+      "c#{id}"
+    end
+
     def to_s
       lhs_s = lhs.map { |v, c| "#{c >= 0 ? '+' : '-'} #{c} #{v.name} " }.join
-      "#{lhs_s}#{sense} #{rhs}"
+      "#{name}: #{lhs_s}#{sense} #{rhs}"
+    end
+
+    @next_id = 0
+
+    def self.next_id
+      @next_id += 1
     end
 
     private

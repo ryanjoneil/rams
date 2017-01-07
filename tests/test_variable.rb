@@ -8,7 +8,6 @@ class TestVariable < Test::Unit::TestCase
     assert_equal 1.0, x.coefficients[x]
   end
 
-  # rubocop:disable Metrics/AbcSize
   def test_variable_hash
     x1 = RAMS::Variable.new
     x2 = RAMS::Variable.new
@@ -18,7 +17,6 @@ class TestVariable < Test::Unit::TestCase
     assert_equal x2.coefficients[x2], 1
     assert_not_equal x1.hash, x2.hash
   end
-  # rubocop:enable Metrics/AbcSize
 
   def test_variable_add_variable
     x1 = RAMS::Variable.new

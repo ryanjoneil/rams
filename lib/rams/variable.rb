@@ -11,9 +11,11 @@ module RAMS
 
     def initialize(low = 0.0, high = nil, type = CONTINUOUS)
       @id = Variable.next_id
+
       @low = low
       @high = high
       @type = type
+
       super({ self => 1.0 })
     end
 
@@ -25,10 +27,10 @@ module RAMS
       "#{low.nil? ? '-inf' : low} <= #{name} <= #{high.nil? ? '+inf' : high}"
     end
 
-    @@NEXT_ID = 0
+    @next_id = 0
 
     def self.next_id
-      @@NEXT_ID += 1
+      @next_id += 1
     end
   end
 end

@@ -11,70 +11,61 @@ module RAMS
   #
   # Models can be maximized or minimized by different solvers.
   class Model
-    attr_accessor :sense, :objective
-    attr_reader :variables, :constraints
+    attr_accessor :objective, :args, :verbose
+    attr_reader :solver, :sense, :variables, :constraints
 
-    SOLVERS = {
-      glpk: RAMS::Solvers::GLPK.new
-    }
+    SOLVERS = { glpk: RAMS::Solvers::GLPK.new }.freeze
 
     def initialize
+      @solver = :glpk
       @sense = :max
       @objective = nil
-      @variables = []
-      @constraints = []
+      @verbose = false
+      @args = []
+      @variables = {}
+      @constraints = {}
+    end
+
+    def solver=(solver)
+      raise(ArgumentError, "valid solvers: #{SOLVERS.keys.join(' ')}") if SOLVERS[solver].nil?
+      @solver = solver
+    end
+
+    def sense=(sense)
+      raise(ArgumentError, 'sense must be :min or :max') unless sense == :min || sense == :max
+      @sense = sense
     end
 
     def variable(low = 0.0, high = nil, type = CONTINUOUS)
       v = Variable.new low, high, type
-      variables << v
-      v
+      variables[v.name] = v
+    end
+
+    def constrain(constraint)
+      constraints[constraint.name] = constraint
     end
 
     def <<(constraint)
-      constraints << constraint
-      self
+      constrain constraint
     end
 
-    def solve(solver = :glpk, *solver_args)
-      model_file = write_model_file
-      begin
-        call_solver solver, model_file, *solver_args
-      ensure
-        model_file.unlink
-      end
+    def solve
+      SOLVERS[solver].solve self
     end
 
     def to_s
       <<-LP
 #{sense}
-  obj: #{(objective.nil? || feasible_objective).to_s}
+  obj: #{objective || feasible_objective}
 st
-  #{constraints.map(&:to_s).join("\n  ")}
+  #{constraints.values.map(&:to_s).join("\n  ")}
 bounds
-  #{variables.map(&:to_s).join("\n  ")}
+  #{variables.values.map(&:to_s).join("\n  ")}
 end
       LP
     end
 
     private
-
-    def write_model_file
-      model_file = Tempfile.new ['', '.lp']
-      model_file.write to_s
-      model_file.close
-      model_file
-    end
-
-    def call_solver(solver, model_file, *solver_args)
-      solution_file = Tempfile.new ['', '.sol']
-      # begin
-      #   puts `glpsol --lp #{model_file.path} -w #{solution_file.path}`
-      # ensure
-      #   solution_file.unlink
-      # end
-      SOLVERS[solver].solve(model_file, solution_file, solver_args)
-    end
 
     def feasible_objective
       variables.first * 0
