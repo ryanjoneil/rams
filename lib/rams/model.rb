@@ -86,7 +86,7 @@ end
     private
 
     def feasible_objective
-      objective || (variables.first * 0)
+      objective || variables.values.first
     end
   end
 end

@@ -25,7 +25,8 @@ module RAMS
 
     def to_s
       lhs_s = lhs.map { |v, c| "#{c >= 0 ? '+' : '-'} #{c} #{v.name} " }.join
-      "#{name}: #{lhs_s}#{sense} #{rhs}"
+      sense_s = sense == :== ? '=' : sense.to_s
+      "#{name}: #{lhs_s}#{sense_s} #{rhs}"
     end
 
     @next_id = 0

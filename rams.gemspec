@@ -8,10 +8,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ryan J. O'Neil"]
   spec.email         = ['ryanjoneil@gmail.com']
   spec.summary       = 'Ruby Algebraic Modeling System'
-  spec.description   = 'todo'
-  spec.homepage      = 'todo'
+  spec.description   = 'A library for solving MILPs in Ruby.'
+  spec.homepage      = 'https://github.com/ryanjoneil/rams'
   spec.license       = 'MIT'
 
-  spec.files         = ['lib/rams.rb']
+  spec.files         = Dir['lib/**/*']
   spec.require_paths = ['lib']
 end

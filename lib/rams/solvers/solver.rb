@@ -42,9 +42,10 @@ module RAMS
         _, stdout, stderr, exit_code = Open3.popen3(*command)
 
         begin
-          output = stdout.gets(nil)
+          output = stdout.gets(nil) || ''
+          error = stderr.gets(nil) || ''
           puts output if model.verbose && output != ''
-          raise stderr.gets(nil) unless exit_code.value == 0
+          raise ((output + error) || 'invalid return code') unless exit_code.value == 0
         ensure
           stdout.close
           stderr.close
