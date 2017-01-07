@@ -24,7 +24,7 @@ vals = (1..9).to_a
 groups = [0, 3, 6]
 
 # 9x9x9 structure for storing all binary variables
-# If x[[i, j, k]] == 1, then problem[i][j] == k.
+# If x[[r, c, v]] == 1, then problem[r][c] == k.
 m = RAMS::Model.new
 x = rows.map do |r|
   cols.map do |c|
