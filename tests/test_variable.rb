@@ -4,8 +4,7 @@ require 'test/unit'
 # RAMS::Variable tests
 class TestVariable < Test::Unit::TestCase
   def test_variable_initialize
-    x = RAMS::Variable.new 'x'
-    assert_equal 'x', x.name, 'x'
+    x = RAMS::Variable.new
     assert_equal 1.0, x.coefficients[x]
   end
 

@@ -66,6 +66,12 @@ module RAMS
       RAMS::Constraint.new(lhs(other), :>=, rhs(other))
     end
 
+    def to_s
+      vars_s = coefficients.map { |v, c| "#{c >= 0 ? '+' : '-'} #{c} #{v.name} " }.join
+      const_s = constant.zero? ? '' : "#{constant >= 0 ? '+' : '-'} #{constant}"
+      vars_s + const_s
+    end
+
     private
 
     def merge_variables(other)
@@ -84,6 +90,7 @@ module RAMS
     end
 
     def rhs(other)
+      return other - constant if other.is_a? Numeric
       other.constant - constant
     end
   end

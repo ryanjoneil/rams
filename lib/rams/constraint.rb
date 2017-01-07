@@ -16,6 +16,11 @@ module RAMS
       validate
     end
 
+    def to_s
+      lhs_s = lhs.map { |v, c| "#{c >= 0 ? '+' : '-'} #{c} #{v.name} " }.join
+      "#{lhs_s}#{sense} #{rhs}"
+    end
+
     private
 
     def validate
