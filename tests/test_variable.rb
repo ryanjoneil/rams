@@ -2,6 +2,7 @@ require './lib/rams.rb'
 require 'test/unit'
 
 # RAMS::Variable tests
+# rubocop:disable ClassLength
 class TestVariable < Test::Unit::TestCase
   def test_variable_initialize
     x = RAMS::Variable.new
@@ -134,5 +135,5 @@ class TestVariable < Test::Unit::TestCase
     assert_match(/1.0 <= v\d+ <= 1.0/, x2.to_s)
     assert_match(/0.0 <= v\d+ <= 0.0/, x3.to_s)
   end
-
 end
+# rubocop:enable ClassLength

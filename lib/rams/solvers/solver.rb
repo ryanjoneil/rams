@@ -1,4 +1,5 @@
 require 'open3'
+require_relative '../solution'
 
 module RAMS
   module Solvers
@@ -33,7 +34,7 @@ module RAMS
 
       def solve_and_parse(model, model_file, solution_file)
         call_solver model, model_file, solution_file
-        parse_solution model, solution_file
+        parse_solution model, File.read(solution_file)
       end
 
       def call_solver(model, model_file, solution_file)
@@ -54,7 +55,29 @@ module RAMS
         raise NotImplementedError
       end
 
-      def parse_solution(_model, _solution_file)
+      def parse_solution(model, solution_text)
+        lines = solution_text.split "\n"
+        RAMS::Solution.new(
+          parse_status(lines),
+          parse_objective(lines),
+          parse_primal(model, lines),
+          parse_dual(model, lines)
+        )
+      end
+
+      def parse_status(_lines)
+        raise NotImplementedError
+      end
+
+      def parse_objective(_lines)
+        raise NotImplementedError
+      end
+
+      def parse_primal(_model, _lines)
+        raise NotImplementedError
+      end
+
+      def parse_dual(_model, _lines)
         raise NotImplementedError
       end
     end

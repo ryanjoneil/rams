@@ -60,13 +60,16 @@ module RAMS
     end
 
     def solve
+      raise(ArgumentError, 'model has no variables') if variables.empty?
+      raise(ArgumentError, 'model has no constraints') if constraints.empty?
       SOLVERS[solver].solve self
     end
 
+    # rubocop:disable AbcSize
     def to_s
       <<-LP
 #{sense}
-  obj: #{objective || feasible_objective}
+  obj: #{feasible_objective.is_a?(Variable) ? feasible_objective.name : feasible_objective}
 st
   #{constraints.values.map(&:to_s).join("\n  ")}
 bounds
@@ -78,11 +81,12 @@ binary
 end
       LP
     end
+    # rubocop:enable AbcSize
 
     private
 
     def feasible_objective
-      variables.first * 0
+      objective || (variables.first * 0)
     end
   end
 end
