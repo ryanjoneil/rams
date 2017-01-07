@@ -37,20 +37,22 @@ module RAMS
         parse_solution model, File.read(solution_file)
       end
 
+      # rubocop:disable MethodLength
       def call_solver(model, model_file, solution_file)
         command = solver_command(model_file, solution_file) + model.args
         _, stdout, stderr, exit_code = Open3.popen3(*command)
 
         begin
           output = stdout.gets(nil) || ''
-          error = stderr.gets(nil) || ''
+          error = output + (stderr.gets(nil) || '')
           puts output if model.verbose && output != ''
-          raise ((output + error) || 'invalid return code') unless exit_code.value == 0
+          raise error unless exit_code.value == 0
         ensure
           stdout.close
           stderr.close
         end
       end
+      # rubocop:enable MethodLength
 
       def solver_command(_model_file, _solution_file)
         raise NotImplementedError

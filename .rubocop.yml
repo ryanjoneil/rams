@@ -3,3 +3,7 @@ Metrics/AbcSize:
 
 Metrics/LineLength:
   Max: 120
+
+AllCops:
+  Exclude:
+    - examples/*.rb
