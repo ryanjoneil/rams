@@ -1,9 +1,10 @@
 dependencies:
+  cache_directories:
+    - glpk-4.60
   pre:
     - sudo apt-get install coinor-cbc coinor-clp
-    - wget http://ftp.gnu.org/gnu/glpk/glpk-4.60.tar.gz
-    - tar xvfz glpk-4.60.tar.gz
-    - cd /home/ubuntu/rams/glpk-4.60 && make && sudo make install
+    - if [[ ! -e glpk-4.60 ]]; then wget http://ftp.gnu.org/gnu/glpk/glpk-4.60.tar.gz && tar xvfz glpk-4.60.tar.gz && cd glpk-4.60 && configure && make; fi
+    - cd glpk-4.60 && sudo make install
 
 test:
   post:
