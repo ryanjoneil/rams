@@ -1,5 +1,6 @@
 dependencies:
   pre:
+    - sudo apt-get install build-essential tar
     - sudo apt-get install coinor-cbc coinor-clp
     - wget http://ftp.gnu.org/gnu/glpk/glpk-4.60.tar.gz && \
       tar xvfz glpk-4.60.tar.gz && \
