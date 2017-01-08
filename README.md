@@ -10,7 +10,7 @@ Make sure you have `glpsol` available on your system. On OSX you can do that wit
 brew install glpk
 ```
 
-On Linux you can `apt-get` or `yum` install the appropriate package. Now you can install the [RAMS gem](https://github.com/ryanjoneil/rams/releases/download/v0.1/rams-0.1.gem).
+On Linux you can `apt-get` or `yum` install the appropriate package. Now you can install the RAMS gem.
 
 ```
 gem install rams
