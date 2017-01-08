@@ -3,9 +3,38 @@ require 'test/unit'
 
 # RAMS::Model tests
 class TestModel < Test::Unit::TestCase
-  # rubocop:disable AbcSize, MethodLength
   def test_simple
+    run_test_simple :cbc
+    run_test_simple :clp
+    run_test_simple :glpk
+  end
+
+  def test_binary
+    run_test_binary :cbc
+    run_test_binary :glpk
+  end
+
+  def test_integer
+    run_test_integer :cbc
+    run_test_integer :glpk
+  end
+
+  def test_infeasible
+    run_test_infeasible :cbc
+    run_test_infeasible :clp
+    run_test_infeasible :glpk
+  end
+
+  def test_unbounded
+    run_test_unbounded :cbc
+    run_test_unbounded :clp
+    run_test_unbounded :glpk
+  end
+
+  # rubocop:disable AbcSize, MethodLength
+  def run_test_simple(solver)
     m = RAMS::Model.new
+    m.solver = solver
     x1 = m.variable
     x2 = m.variable
 
@@ -26,8 +55,9 @@ class TestModel < Test::Unit::TestCase
   # rubocop:enable AbcSize, MethodLength
 
   # rubocop:disable AbcSize, MethodLength
-  def test_binary
+  def run_test_binary(solver)
     m = RAMS::Model.new
+    m.solver = solver
 
     x1 = m.variable type: :binary
     x2 = m.variable type: :binary
@@ -52,8 +82,9 @@ class TestModel < Test::Unit::TestCase
   end
   # rubocop:enable AbcSize, MethodLength
 
-  def test_integer
+  def run_test_integer(solver)
     m = RAMS::Model.new
+    m.solver = solver
 
     x = m.variable type: :integer
     m.constrain(x <= 1.5)
@@ -68,8 +99,9 @@ class TestModel < Test::Unit::TestCase
   end
 
   # rubocop:disable MethodLength
-  def test_infeasible
+  def run_test_infeasible(solver)
     m = RAMS::Model.new
+    m.solver = solver
 
     x1 = m.variable type: :binary, high: 0
     x2 = m.variable type: :binary, high: 0
@@ -86,8 +118,9 @@ class TestModel < Test::Unit::TestCase
   end
   # rubocop:enable MethodLength
 
-  def test_unbounded
+  def run_test_unbounded(solver)
     m = RAMS::Model.new
+    m.solver = solver
 
     x = m.variable type: :integer
     m.constrain(x >= 1)
@@ -96,6 +129,6 @@ class TestModel < Test::Unit::TestCase
     m.objective = x
     solution = m.solve
 
-    assert_equal :undefined, solution.status
+    assert_includes [:unbounded, :undefined], solution.status
   end
 end

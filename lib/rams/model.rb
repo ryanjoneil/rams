@@ -1,5 +1,7 @@
 require 'tempfile'
 require_relative 'variable'
+require_relative 'solvers/cbc'
+require_relative 'solvers/clp'
 require_relative 'solvers/glpk'
 
 module RAMS
@@ -28,7 +30,11 @@ module RAMS
     attr_accessor :objective, :args, :verbose
     attr_reader :solver, :sense, :variables, :constraints
 
-    SOLVERS = { glpk: RAMS::Solvers::GLPK.new }.freeze
+    SOLVERS = {
+      cbc: RAMS::Solvers::CBC.new,
+      clp: RAMS::Solvers::CLP.new,
+      glpk: RAMS::Solvers::GLPK.new
+    }.freeze
 
     def initialize
       @solver = :glpk
