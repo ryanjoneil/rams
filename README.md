@@ -10,7 +10,13 @@ Make sure you have `glpsol` available on your system. On OSX you can do that wit
 brew install glpk
 ```
 
-On Linux you can `apt-get` or `yum` install the appropriate package. Now install the [RAMS gem](https://github.com/ryanjoneil/rams/releases/download/v0.1/rams-0.1.gem) and run the following:
+On Linux you can `apt-get` or `yum` install the appropriate package. Now you can install the [RAMS gem](https://github.com/ryanjoneil/rams/releases/download/v0.1/rams-0.1.gem).
+
+```
+gem install rams
+```
+
+You should have everything installed to build and solve models now. Try running something like this:
 
 ```ruby
 require 'rams'
