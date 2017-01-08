@@ -1,10 +1,10 @@
 # Ruby Algebraic Modeling System
 
-RAMS is a library for formulating and solving [Mixed Integer Linear Programs](https://en.wikipedia.org/wiki/Integer_programming) in Ruby. Currently, it only supports the [GNU Linear Programming Kit](https://www.gnu.org/software/glpk/), but more solvers are on the way.
+RAMS is a library for formulating and solving [Mixed Integer Linear Programs](https://en.wikipedia.org/wiki/Integer_programming) in Ruby. Currently it supports [CLP](https://www.coin-or.org/Clp/), [CBC](https://www.coin-or.org/Cbc/), and [GNU Linear Programming Kit](https://www.gnu.org/software/glpk/), and more solvers are on the way.
 
 ## Quick Start
 
-Make sure you have `glpsol` available on your system. On OSX you can do that with `brew`:
+GLPK is the default solver, so make sure you at least have `glpsol` available on your system. On OSX you can do that with `brew`:
 
 ```
 brew install glpk
@@ -49,6 +49,19 @@ objective: 4.0
 x1 = 1.0
 x2 = 0.0
 x3 = 1.0
+```
+
+If you want to switch to a different solver, simply install that solver onto your system, and change the `solver` attribute on the model.
+
+```ruby
+m.solver = :cbc  # or...
+m.solver = :clp
+```
+
+Additional solver arguments can be passed as though they are command line flags.
+
+```ruby
+m.args = ['--dfs', '--bib']
 ```
 
 More examples are available [here](https://github.com/ryanjoneil/rams/tree/master/examples). Happy modeling!

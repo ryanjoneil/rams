@@ -39,7 +39,7 @@ module RAMS
 
       # rubocop:disable MethodLength
       def call_solver(model, model_file, solution_file)
-        command = solver_command(model_file, solution_file) + model.args
+        command = solver_command(model_file, solution_file, model.args)
         _, stdout, stderr, exit_code = Open3.popen3(*command)
 
         begin
@@ -54,25 +54,25 @@ module RAMS
       end
       # rubocop:enable MethodLength
 
-      def solver_command(_model_file, _solution_file)
+      def solver_command(_model_file, _solution_file, _args)
         raise NotImplementedError
       end
 
       def parse_solution(model, solution_text)
         lines = solution_text.split "\n"
         RAMS::Solution.new(
-          parse_status(lines),
-          parse_objective(lines),
+          parse_status(model, lines),
+          parse_objective(model, lines),
           parse_primal(model, lines),
           parse_dual(model, lines)
         )
       end
 
-      def parse_status(_lines)
+      def parse_status(_model, _lines)
         raise NotImplementedError
       end
 
-      def parse_objective(_lines)
+      def parse_objective(_model, _lines)
         raise NotImplementedError
       end
 
