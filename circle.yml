@@ -1,7 +1,9 @@
 dependencies:
   pre:
     - sudo apt-get install coinor-cbc coinor-clp
-    - wget http://ftp.gnu.org/gnu/glpk/glpk-4.60.tar.gz; tar xvfz glpk-4.60.tar.gz; cd glpk-4.60; make; sudo make install; cd ..; rm -rf glpk-4.60
+    - wget http://ftp.gnu.org/gnu/glpk/glpk-4.60.tar.gz
+    - tar xvfz glpk-4.60.tar.gz
+    - cd glpk-4.60 && make && sudo make install
 
 test:
   post:
