@@ -55,7 +55,9 @@ If you want to switch to a different solver, simply install that solver onto you
 
 ```ruby
 m.solver = :cbc  # or...
-m.solver = :clp
+m.solver = :clp  # or...
+m.solver = :glpk # or...
+m.solver = :scip
 ```
 
 Additional solver arguments can be passed as though they are command line flags.
