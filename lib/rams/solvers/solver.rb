@@ -8,7 +8,7 @@ module RAMS
       def solve(model)
         model_file = write_model_file model
         begin
-          get_solution model, model_file
+          get_solution model, model_file.path
         ensure
           model_file.unlink
         end
@@ -23,23 +23,24 @@ module RAMS
         model_file
       end
 
-      def get_solution(model, model_file)
-        solution_file = Tempfile.new ['', '.sol']
+      def get_solution(model, model_path)
+        solution_path = model_path + '.sol'
         begin
-          solve_and_parse model, model_file, solution_file
+          solve_and_parse model, model_path, solution_path
         ensure
-          solution_file.unlink
+          File.delete(solution_path) if File.exist?(solution_path)
         end
       end
 
-      def solve_and_parse(model, model_file, solution_file)
-        call_solver model, model_file, solution_file
-        parse_solution model, File.read(solution_file)
+      def solve_and_parse(model, model_path, solution_path)
+        call_solver model, model_path, solution_path
+        return RAMS::Solution.new(:unknown, nil, {}, {}) unless File.exist? solution_path
+        parse_solution model, File.read(solution_path)
       end
 
       # rubocop:disable MethodLength
-      def call_solver(model, model_file, solution_file)
-        command = solver_command(model_file, solution_file, model.args)
+      def call_solver(model, model_path, solution_path)
+        command = solver_command(model_path, solution_path, model.args)
         _, stdout, stderr, exit_code = Open3.popen3(*command)
 
         begin
@@ -54,7 +55,7 @@ module RAMS
       end
       # rubocop:enable MethodLength
 
-      def solver_command(_model_file, _solution_file, _args)
+      def solver_command(_model_file, _solution_path, _args)
         raise NotImplementedError
       end
 

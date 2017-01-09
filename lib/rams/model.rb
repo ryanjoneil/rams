@@ -2,6 +2,7 @@ require 'tempfile'
 require_relative 'variable'
 require_relative 'solvers/cbc'
 require_relative 'solvers/clp'
+require_relative 'solvers/cplex'
 require_relative 'solvers/glpk'
 
 module RAMS
@@ -33,6 +34,7 @@ module RAMS
     SOLVERS = {
       cbc: RAMS::Solvers::CBC.new,
       clp: RAMS::Solvers::CLP.new,
+      cplex: RAMS::Solvers::CPLEX.new,
       glpk: RAMS::Solvers::GLPK.new
     }.freeze
 

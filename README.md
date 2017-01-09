@@ -1,6 +1,6 @@
 # Ruby Algebraic Modeling System
 
-RAMS is a library for formulating and solving [Mixed Integer Linear Programs](https://en.wikipedia.org/wiki/Integer_programming) in Ruby. Currently it supports [CLP](https://www.coin-or.org/Clp/), [CBC](https://www.coin-or.org/Cbc/), and [GNU Linear Programming Kit](https://www.gnu.org/software/glpk/), and more solvers are on the way.
+RAMS is a library for formulating and solving [Mixed Integer Linear Programs](https://en.wikipedia.org/wiki/Integer_programming) in Ruby. Currently it supports [CLP](https://www.coin-or.org/Clp/), [CBC](https://www.coin-or.org/Cbc/), [CPLEX](https://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/), and [GNU Linear Programming Kit](https://www.gnu.org/software/glpk/), and more solvers are on the way.
 
 ## Quick Start
 
@@ -54,8 +54,9 @@ x3 = 1.0
 If you want to switch to a different solver, simply install that solver onto your system, and change the `solver` attribute on the model.
 
 ```ruby
-m.solver = :cbc  # or...
-m.solver = :clp  # or...
+m.solver = :cbc   # or
+m.solver = :clp   # or
+m.solver = :cplex # or
 m.solver = :glpk
 ```
 
