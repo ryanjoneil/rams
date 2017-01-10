@@ -2,32 +2,38 @@ require './lib/rams.rb'
 require 'test/unit'
 
 # RAMS::Model tests
+# rubocop:disable ClassLength
 class TestModel < Test::Unit::TestCase
   def test_simple
     run_test_simple :cbc
     run_test_simple :clp
+    run_test_simple :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_simple :glpk
   end
 
   def test_binary
     run_test_binary :cbc
+    run_test_binary :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_binary :glpk
   end
 
   def test_integer
     run_test_integer :cbc
+    run_test_integer :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_integer :glpk
   end
 
   def test_infeasible
     run_test_infeasible :cbc
     run_test_infeasible :clp
+    run_test_infeasible :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_infeasible :glpk
   end
 
   def test_unbounded
     run_test_unbounded :cbc
     run_test_unbounded :clp
+    run_test_unbounded :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_unbounded :glpk
   end
 
@@ -132,3 +138,4 @@ class TestModel < Test::Unit::TestCase
     assert_includes [:unbounded, :undefined], solution.status
   end
 end
+# rubocop:enable ClassLength

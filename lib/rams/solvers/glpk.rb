@@ -4,8 +4,8 @@ module RAMS
   module Solvers
     # Interface to the GNU Linear Programming Kit
     class GLPK < Solver
-      def solver_command(model_file, solution_file, args)
-        ['glpsol', '--lp', model_file.path, '--output', solution_file.path] + args
+      def solver_command(model_path, solution_path, args)
+        ['glpsol', '--lp', model_path, '--output', solution_path] + args
       end
 
       private
