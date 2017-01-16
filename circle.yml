@@ -12,9 +12,8 @@ dependencies:
 
     # SCIP
     - if [[ ! -e scipoptsuite-3.2.1 ]]; then wget http://scip.zib.de/download/release/scipoptsuite-3.2.1.tgz && tar xvfz scipoptsuite-3.2.1.tgz && cd scipoptsuite-3.2.1 && make; fi
-    - cd scipoptsuite-3.2.1 && sudo make install INSTALLDIR=/usr/local
+    - cd scipoptsuite-3.2.1 && sudo make install INSTALLDIR=/usr
 
 test:
   post:
     - LD_LIBRARY_PATH=/usr/local/lib bundle exec rake test
-    - LD_LIBRARY_PATH=/usr/local/lib bundle exec ruby examples/sudoku.rb
