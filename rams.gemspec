@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'rams'
-  spec.version       = '0.1.2'
+  spec.version       = '0.1.3'
   spec.authors       = ["Ryan J. O'Neil"]
   spec.email         = ['ryanjoneil@gmail.com']
   spec.summary       = 'Ruby Algebraic Modeling System'

@@ -1,10 +1,18 @@
 dependencies:
   cache_directories:
     - glpk-4.60
+    - scipoptsuite-3.2.1
+
   pre:
     - sudo apt-get install coinor-cbc coinor-clp
+
+    # GLPK
     - if [[ ! -e glpk-4.60 ]]; then wget http://ftp.gnu.org/gnu/glpk/glpk-4.60.tar.gz && tar xvfz glpk-4.60.tar.gz && cd glpk-4.60 && ./configure && make; fi
     - cd glpk-4.60 && sudo make install
+
+    # SCIP
+    - if [[ ! -e scipoptsuite-3.2.1 ]]; then wget http://scip.zib.de/download/release/scipoptsuite-3.2.1.tgz && tar xvfz scipoptsuite-3.2.1.tgz && cd scipoptsuite-3.2.1 && make; fi
+    - cd scipoptsuite-3.2.1 && sudo make install INSTALLDIR=../../../../usr/local
 
 test:
   post:

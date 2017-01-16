@@ -13,10 +13,10 @@ module RAMS
       def parse_status(_model, lines)
         return :undefined if lines.count < 1
         status = lines.first
-        return :optimal if status =~ /Optimal/
-        return :feasible if status =~ /Stopped/
-        return :infeasible if status =~ /Infeasible/
-        return :unbounded if status =~ /Unbounded/
+        return :optimal if status =~ /optimal/i
+        return :feasible if status =~ /stopped/i
+        return :infeasible if status =~ /infeasible/i
+        return :unbounded if status =~ /unbounded/i
         :undefined
       end
 

@@ -48,6 +48,7 @@ module RAMS
           error = output + (stderr.gets(nil) || '')
           puts output if model.verbose && output != ''
           raise error unless exit_code.value == 0
+          return output
         ensure
           stdout.close
           stderr.close

@@ -1,6 +1,12 @@
 # Ruby Algebraic Modeling System
 
-RAMS is a library for formulating and solving [Mixed Integer Linear Programs](https://en.wikipedia.org/wiki/Integer_programming) in Ruby. Currently it supports [CLP](https://www.coin-or.org/Clp/), [CBC](https://www.coin-or.org/Cbc/), [CPLEX](https://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/), and [GNU Linear Programming Kit](https://www.gnu.org/software/glpk/), and more solvers are on the way.
+RAMS is a library for formulating and solving [Mixed Integer Linear Programs](https://en.wikipedia.org/wiki/Integer_programming) in Ruby. Currently it supports the following solvers:
+
+* [CLP](https://www.coin-or.org/Clp/)
+* [CBC](https://www.coin-or.org/Cbc/)
+* [CPLEX](https://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/)
+* [GNU Linear Programming Kit](https://www.gnu.org/software/glpk/)
+* [SCIP](http://scip.zib.de)
 
 ## Quick Start
 
@@ -51,13 +57,14 @@ x2 = 0.0
 x3 = 1.0
 ```
 
-If you want to switch to a different solver, simply install that solver onto your system, and change the `solver` attribute on the model.
+If you want to switch to a different solver, simply install that solver onto your system, and change the `solver` attribute on the model. Make sure you have that solver's executable in your `PATH`.
 
 ```ruby
 m.solver = :cbc   # or
 m.solver = :clp   # or
 m.solver = :cplex # or
-m.solver = :glpk
+m.solver = :glpk  # or
+m.solver = :scip
 ```
 
 Additional solver arguments can be passed as though they are command line flags.

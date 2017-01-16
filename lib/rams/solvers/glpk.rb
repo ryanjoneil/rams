@@ -12,10 +12,10 @@ module RAMS
 
       def parse_status(_model, lines)
         status = lines.select { |l| l =~ /^Status/ }.first
-        return :optimal if status =~ /OPTIMAL/
-        return :feasible if status =~ /FEASIBLE/
-        return :infeasible if status =~ /EMPTY/
-        return :unbounded if status =~ /UNBOUNDED/
+        return :optimal if status =~ /optimal/i
+        return :feasible if status =~ /feasibe/i
+        return :infeasible if status =~ /empty/i
+        return :unbounded if status =~ /unbounded/i
         :undefined
       end
 
