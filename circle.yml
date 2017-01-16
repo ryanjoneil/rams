@@ -12,7 +12,7 @@ dependencies:
 
     # SCIP
     - if [[ ! -e scipoptsuite-3.2.1 ]]; then wget http://scip.zib.de/download/release/scipoptsuite-3.2.1.tgz && tar xvfz scipoptsuite-3.2.1.tgz && cd scipoptsuite-3.2.1 && make; fi
-    - cd scipoptsuite-3.2.1 && sudo make install INSTALLDIR=/usr
+    - cd scipoptsuite-3.2.1 && sudo make install INSTALLDIR=../../../../usr/local
 
 test:
   post:
