@@ -9,18 +9,21 @@ class TestModel < Test::Unit::TestCase
     run_test_simple :clp
     run_test_simple :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_simple :glpk
+    run_test_simple(:scip, ['-c', 'set presolving maxrounds 0'])
   end
 
   def test_binary
     run_test_binary :cbc
     run_test_binary :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_binary :glpk
+    run_test_binary :scip
   end
 
   def test_integer
     run_test_integer :cbc
     run_test_integer :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_integer :glpk
+    run_test_integer :scip
   end
 
   def test_infeasible
@@ -28,6 +31,7 @@ class TestModel < Test::Unit::TestCase
     run_test_infeasible :clp
     run_test_infeasible :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_infeasible :glpk
+    run_test_infeasible :scip
   end
 
   def test_unbounded
@@ -35,17 +39,19 @@ class TestModel < Test::Unit::TestCase
     run_test_unbounded :clp
     run_test_unbounded :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_unbounded :glpk
+    run_test_unbounded :scip
   end
 
-  # rubocop:disable AbcSize, MethodLength
-  def run_test_simple(solver)
+  # rubocop:disable MethodLength
+  def run_test_simple(solver, args = [])
     m = RAMS::Model.new
     m.solver = solver
-    x1 = m.variable
+    m.args = args
+
+    x1 = m.variable low: 0.5
     x2 = m.variable
 
-    c1 = m.constrain(x1 + x2 <= 1)
-    c2 = m.constrain(x1 >= 0.5)
+    c = m.constrain(x1 + x2 <= 1)
 
     m.sense = :max
     m.objective = x1 + (2 * x2)
@@ -55,15 +61,15 @@ class TestModel < Test::Unit::TestCase
     assert_in_delta 1.5, solution.objective, 10e-7
     assert_in_delta 0.5, solution[x1], 10e-7
     assert_in_delta 0.5, solution[x2], 10e-7
-    assert_in_delta 2.0, solution.dual[c1], 10e-7
-    assert_in_delta(-1.0, solution.dual[c2], 10e-7)
+    assert_in_delta 2.0, solution.dual[c], 10e-7
   end
-  # rubocop:enable AbcSize, MethodLength
+  # rubocop:enable MethodLength
 
   # rubocop:disable AbcSize, MethodLength
-  def run_test_binary(solver)
+  def run_test_binary(solver, args = [])
     m = RAMS::Model.new
     m.solver = solver
+    m.args = args
 
     x1 = m.variable type: :binary
     x2 = m.variable type: :binary
@@ -88,9 +94,11 @@ class TestModel < Test::Unit::TestCase
   end
   # rubocop:enable AbcSize, MethodLength
 
-  def run_test_integer(solver)
+  # rubocop:disable MethodLength
+  def run_test_integer(solver, args = [])
     m = RAMS::Model.new
     m.solver = solver
+    m.args = args
 
     x = m.variable type: :integer
     m.constrain(x <= 1.5)
@@ -103,11 +111,12 @@ class TestModel < Test::Unit::TestCase
     assert_in_delta 1.0, solution.objective, 10e-7
     assert_in_delta 1.0, solution[x], 10e-7
   end
+  # rubocop:enable MethodLength
 
-  # rubocop:disable MethodLength
-  def run_test_infeasible(solver)
+  def run_test_infeasible(solver, args = [])
     m = RAMS::Model.new
     m.solver = solver
+    m.args = args
 
     x1 = m.variable type: :binary, high: 0
     x2 = m.variable type: :binary, high: 0
@@ -118,15 +127,12 @@ class TestModel < Test::Unit::TestCase
     solution = m.solve
 
     assert_equal :infeasible, solution.status
-    assert_in_delta 0.0, solution.objective, 10e-7
-    assert_in_delta 0.0, solution[x1], 10e-7
-    assert_in_delta 0.0, solution[x2], 10e-7
   end
-  # rubocop:enable MethodLength
 
-  def run_test_unbounded(solver)
+  def run_test_unbounded(solver, args = [])
     m = RAMS::Model.new
     m.solver = solver
+    m.args = args
 
     x = m.variable type: :integer
     m.constrain(x >= 1)

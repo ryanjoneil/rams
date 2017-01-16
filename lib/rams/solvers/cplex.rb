@@ -29,9 +29,9 @@ module RAMS
 
       def parse_status(_model, xml_doc)
         status = xml_doc.css('CPLEXSolution').css('header').first['solutionStatusString']
-        return :optimal if status =~ /optimal/
-        return :feasible if status =~ /feasible/
-        return :unbounded if status =~ /unbounded/
+        return :optimal if status =~ /optimal/i
+        return :feasible if status =~ /feasible/i
+        return :unbounded if status =~ /unbounded/i
         :unknown
       end
 
