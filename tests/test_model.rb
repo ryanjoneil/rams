@@ -42,6 +42,13 @@ class TestModel < Test::Unit::TestCase
     run_test_unbounded :scip
   end
 
+  def test_impliation
+    run_test_implication :cbc
+    run_test_implication :cplex if ENV['RAMS_TEST_CPLEX']
+    run_test_implication :glpk
+    run_test_implication :scip
+  end
+
   # rubocop:disable MethodLength
   def run_test_simple(solver, args = [])
     m = RAMS::Model.new
@@ -142,6 +149,25 @@ class TestModel < Test::Unit::TestCase
     solution = m.solve
 
     assert_includes [:unbounded, :undefined], solution.status
+  end
+
+  def run_test_implication(solver, args = [])
+    m = RAMS::Model.new
+    m.solver = solver
+    m.args = args
+
+    x1 = m.variable type: :binary
+    x2 = m.variable type: :binary
+    m.constrain(x1 + x2 <= 1)
+    m.constrain(x1 <= x2)
+
+    m.sense = :max
+    m.objective = 2 * x1 + x2
+    solution = m.solve
+
+    assert_equal :optimal, solution.status
+    assert_equal 0, solution[x1]
+    assert_equal 1, solution[x2]
   end
 end
 # rubocop:enable ClassLength
