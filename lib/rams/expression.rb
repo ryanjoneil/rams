@@ -68,9 +68,9 @@ module RAMS
     end
 
     def to_s
-      vars_s = coefficients.map { |v, c| "#{c >= 0 ? '+' : '-'} #{c} #{v.name} " }.join
-      sign_s = constant >= 0 ? '+' : '-'
-      const_s = constant == 0 ? '' : "#{sign_s} #{constant}"
+      vars_s = coefficients.map { |v, c| "#{c >= 0 ? '+ ' : ''}#{c} #{v.name} " }.join
+      sign_s = constant >= 0 ? '+ ' : ''
+      const_s = constant == 0 ? '' : "#{sign_s}#{constant}"
       vars_s + const_s
     end
 

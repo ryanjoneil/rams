@@ -14,6 +14,17 @@ class TestExpression < Test::Unit::TestCase
     assert_equal 11, e3.constant
   end
 
+  def test_basic_substract_expression
+    x1 = RAMS::Variable.new
+    x2 = RAMS::Variable.new
+    e1 = x1 - x2
+    e2 = x2 - x1
+    assert_equal 1, e1.coefficients[x1]
+    assert_equal(-1, e1.coefficients[x2])
+    assert_equal(-1, e2.coefficients[x1])
+    assert_equal 1, e2.coefficients[x2]
+  end
+
   def test_subtract_expressions
     x1 = RAMS::Variable.new
     x2 = RAMS::Variable.new
