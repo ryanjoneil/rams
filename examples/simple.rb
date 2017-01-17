@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'rams'
+require_relative '../lib/rams'
 
 m = RAMS::Model.new
 
