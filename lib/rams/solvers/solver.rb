@@ -18,7 +18,7 @@ module RAMS
 
       def write_model_file(model)
         model_file = Tempfile.new ['', '.lp']
-        model_file.write model.to_s
+        model_file.write model.to_lp
         model_file.close
         model_file
       end
