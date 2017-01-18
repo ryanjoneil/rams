@@ -89,7 +89,6 @@ m.objective = arcs.flatten.zip(distance.flatten).map { |a, d| a * d }.reduce :+
 
 n = 0
 while n += 1
-  # puts m.to_s
   solution = m.solve
 
   puts '=' * 120

@@ -1,10 +1,12 @@
 require 'tempfile'
-require_relative 'variable'
+require_relative 'expression'
+require_relative 'formatters/lp'
 require_relative 'solvers/cbc'
 require_relative 'solvers/clp'
 require_relative 'solvers/cplex'
 require_relative 'solvers/glpk'
 require_relative 'solvers/scip'
+require_relative 'variable'
 
 module RAMS
   # A Model is a collection of:
@@ -29,8 +31,9 @@ module RAMS
   #   m.solve
   #
   class Model
-    attr_accessor :objective, :args, :verbose
+    attr_accessor :args, :verbose
     attr_reader :solver, :sense, :variables, :constraints
+    attr_writer :objective
 
     SOLVERS = {
       cbc: RAMS::Solvers::CBC.new,
@@ -69,34 +72,18 @@ module RAMS
       constraints[constraint.name] = constraint
     end
 
+    def objective
+      @objective || Expression.new(variables.values.first => 0)
+    end
+
     def solve
       raise(ArgumentError, 'model has no variables') if variables.empty?
       raise(ArgumentError, 'model has no constraints') if constraints.empty?
       SOLVERS[solver].solve self
     end
 
-    # rubocop:disable AbcSize
-    def to_s
-      <<-LP
-#{sense}
-  obj: #{feasible_objective.is_a?(Variable) ? feasible_objective.name : feasible_objective}
-st
-  #{constraints.values.map(&:to_s).join("\n  ")}
-bounds
-  #{variables.values.map(&:to_s).join("\n  ")}
-general
-  #{variables.values.select { |v| v.type == :integer }.map(&:name).join("\n  ")}
-binary
-  #{variables.values.select { |v| v.type == :binary }.map(&:name).join("\n  ")}
-end
-      LP
-    end
-    # rubocop:enable AbcSize
-
-    private
-
-    def feasible_objective
-      objective || variables.values.first
+    def to_lp
+      RAMS::Formatters::LP.format self
     end
   end
 end

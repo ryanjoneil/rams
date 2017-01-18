@@ -42,7 +42,7 @@ class TestModel < Test::Unit::TestCase
     run_test_unbounded :scip
   end
 
-  def test_impliation
+  def test_implication
     run_test_implication :cbc
     run_test_implication :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_implication :glpk
@@ -151,6 +151,7 @@ class TestModel < Test::Unit::TestCase
     assert_includes [:unbounded, :undefined], solution.status
   end
 
+  # rubocop:disable MethodLength
   def run_test_implication(solver, args = [])
     m = RAMS::Model.new
     m.solver = solver
@@ -169,5 +170,6 @@ class TestModel < Test::Unit::TestCase
     assert_equal 0, solution[x1]
     assert_equal 1, solution[x2]
   end
+  # rubocop:enable MethodLength
 end
 # rubocop:enable ClassLength

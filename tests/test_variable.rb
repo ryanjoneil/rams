@@ -2,7 +2,6 @@ require './lib/rams.rb'
 require 'test/unit'
 
 # RAMS::Variable tests
-# rubocop:disable ClassLength
 class TestVariable < Test::Unit::TestCase
   def test_variable_initialize
     x = RAMS::Variable.new
@@ -117,23 +116,4 @@ class TestVariable < Test::Unit::TestCase
     x2 = RAMS::Variable.new
     assert_raise(NotImplementedError) { x1 / x2 }
   end
-
-  def test_continuous_variable_to_s
-    x1 = RAMS::Variable.new
-    x2 = RAMS::Variable.new low: nil
-    x3 = RAMS::Variable.new low: 1, high: 5
-    assert_match(/0.0 <= v\d+ <= \+inf/, x1.to_s)
-    assert_match(/-inf <= v\d+ <= \+inf/, x2.to_s)
-    assert_match(/1 <= v\d+ <= 5/, x3.to_s)
-  end
-
-  def test_binary_variable_to_s
-    x1 = RAMS::Variable.new type: :binary
-    x2 = RAMS::Variable.new type: :binary, low: 1.0
-    x3 = RAMS::Variable.new type: :binary, high: 0.0
-    assert_match(/0.0 <= v\d+ <= 1.0/, x1.to_s)
-    assert_match(/1.0 <= v\d+ <= 1.0/, x2.to_s)
-    assert_match(/0.0 <= v\d+ <= 0.0/, x3.to_s)
-  end
 end
-# rubocop:enable ClassLength

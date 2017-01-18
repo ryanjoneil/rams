@@ -23,12 +23,6 @@ module RAMS
       "c#{id}"
     end
 
-    def to_s
-      lhs_s = lhs.map { |v, c| "#{c >= 0 ? '+ ' : ''}#{c} #{v.name} " }.join
-      sense_s = sense == :== ? '=' : sense.to_s
-      "#{name}: #{lhs_s}#{sense_s} #{rhs}"
-    end
-
     @next_id = 0
 
     def self.next_id
