@@ -1,9 +1,9 @@
-# Fixnums can be added to expressions or variables or multiplied
+# Integer can be added to expressions or variables or multiplied
 # by them to create expressions:
 #
 #     4 - (3 * x)
 #     y / 2
-class Fixnum
+class Integer
   alias old_add +
   alias old_sub -
   alias old_multiply *
