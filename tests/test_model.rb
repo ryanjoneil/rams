@@ -5,48 +5,48 @@ require 'test/unit'
 # rubocop:disable ClassLength
 class TestModel < Test::Unit::TestCase
   def test_simple
-    run_test_simple :cbc
-    run_test_simple :clp
+    run_test_simple :cbc if ENV['RAMS_TEST_CBC']
+    run_test_simple :clp if ENV['RAMS_TEST_CLP']
     run_test_simple :cplex if ENV['RAMS_TEST_CPLEX']
-    run_test_simple :glpk
-    run_test_simple(:scip, ['-c', 'set presolving maxrounds 0'])
+    run_test_simple :glpk if ENV['RAMS_TEST_GLPK']
+    run_test_simple(:scip, ['-c', 'set presolving maxrounds 0']) if ENV['RAMS_TEST_SCIP']
   end
 
   def test_binary
-    run_test_binary :cbc
+    run_test_binary :cbc if ENV['RAMS_TEST_CBC']
     run_test_binary :cplex if ENV['RAMS_TEST_CPLEX']
-    run_test_binary :glpk
-    run_test_binary :scip
+    run_test_binary :glpk if ENV['RAMS_TEST_GLPK']
+    run_test_binary :scip if ENV['RAMS_TEST_SCIP']
   end
 
   def test_integer
-    run_test_integer :cbc
+    run_test_integer :cbc if ENV['RAMS_TEST_CBC']
     run_test_integer :cplex if ENV['RAMS_TEST_CPLEX']
-    run_test_integer :glpk
-    run_test_integer :scip
+    run_test_integer :glpk if ENV['RAMS_TEST_GLPK']
+    run_test_integer :scip if ENV['RAMS_TEST_SCIP']
   end
 
   def test_infeasible
-    run_test_infeasible :cbc
-    run_test_infeasible :clp
+    run_test_infeasible :cbc if ENV['RAMS_TEST_CBC']
+    run_test_infeasible :clp if ENV['RAMS_TEST_CLP']
     run_test_infeasible :cplex if ENV['RAMS_TEST_CPLEX']
-    run_test_infeasible :glpk
-    run_test_infeasible :scip
+    run_test_infeasible :glpk if ENV['RAMS_TEST_GLPK']
+    run_test_infeasible :scip if ENV['RAMS_TEST_SCIP']
   end
 
   def test_unbounded
-    run_test_unbounded :cbc
-    run_test_unbounded :clp
+    run_test_unbounded :cbc if ENV['RAMS_TEST_CBC']
+    run_test_unbounded :clp if ENV['RAMS_TEST_CLP']
     run_test_unbounded :cplex if ENV['RAMS_TEST_CPLEX']
-    run_test_unbounded :glpk
-    run_test_unbounded :scip
+    run_test_unbounded :glpk if ENV['RAMS_TEST_GLPK']
+    run_test_unbounded :scip if ENV['RAMS_TEST_SCIP']
   end
 
   def test_implication
-    run_test_implication :cbc
+    run_test_implication :cbc if ENV['RAMS_TEST_CBC']
     run_test_implication :cplex if ENV['RAMS_TEST_CPLEX']
-    run_test_implication :glpk
-    run_test_implication :scip
+    run_test_implication :glpk if ENV['RAMS_TEST_GLPK']
+    run_test_implication :scip if ENV['RAMS_TEST_SCIP']
   end
 
   # rubocop:disable MethodLength

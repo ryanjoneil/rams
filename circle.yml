@@ -1,3 +1,15 @@
+machine:
+  environment:
+    LD_LIBRARY_PATH: /usr/local/lib
+    RAMS_TEST_CBC: true
+    RAMS_TEST_CLP: true
+    RAMS_TEST_GLPK: true
+    RAMS_TEST_SCIP: true
+  
+  ruby:
+    version:
+      2.4.0
+
 dependencies:
   cache_directories:
     - glpk-4.60
@@ -16,4 +28,4 @@ dependencies:
 
 test:
   post:
-    - LD_LIBRARY_PATH=/usr/local/lib bundle exec rake test
+    - bundle exec rake test
