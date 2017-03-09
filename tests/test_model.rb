@@ -9,7 +9,7 @@ class TestModel < Test::Unit::TestCase
     run_test_simple :clp if ENV['RAMS_TEST_CLP']
     run_test_simple :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_simple :glpk if ENV['RAMS_TEST_GLPK']
-    run_test_simple(:scip, ['-c', 'set presolving maxrounds 0']) if ENV['RAMS_TEST_SCIP']
+    run_test_simple(:scip, false) if ENV['RAMS_TEST_SCIP']
   end
 
   def test_binary
@@ -50,7 +50,7 @@ class TestModel < Test::Unit::TestCase
   end
 
   # rubocop:disable MethodLength
-  def run_test_simple(solver, args = [])
+  def run_test_simple(solver, dual = true, args = [])
     m = RAMS::Model.new
     m.solver = solver
     m.args = args
@@ -68,7 +68,7 @@ class TestModel < Test::Unit::TestCase
     assert_in_delta 1.5, solution.objective, 10e-7
     assert_in_delta 0.5, solution[x1], 10e-7
     assert_in_delta 0.5, solution[x2], 10e-7
-    assert_in_delta 2.0, solution.dual[c], 10e-7
+    assert_in_delta(2.0, solution.dual[c], 10e-7) if dual
   end
   # rubocop:enable MethodLength
 
