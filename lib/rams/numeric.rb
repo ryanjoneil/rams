@@ -30,7 +30,7 @@ class Integer
   end
 end
 
-# Floats can be treated the same way as Fixnums.
+# Floats can be treated the same way as Integers.
 class Float
   alias old_add +
   alias old_sub -

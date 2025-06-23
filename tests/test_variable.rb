@@ -47,7 +47,7 @@ class TestVariable < Test::Unit::TestCase
     assert_equal 2.5, e.constant
   end
 
-  def test_fixnum_add_variable
+  def test_integer_add_variable
     x = RAMS::Variable.new
     e = 2 + x
     assert_equal 1.0, e.coefficients[x]
@@ -77,7 +77,7 @@ class TestVariable < Test::Unit::TestCase
     assert_equal 2.5, e.constant
   end
 
-  def test_fixnum_subtract_variable
+  def test_integer_subtract_variable
     x = RAMS::Variable.new
     e = 2 - x
     assert_equal(-1.0, e.coefficients[x])
