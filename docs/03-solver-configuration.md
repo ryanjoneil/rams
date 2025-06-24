@@ -32,6 +32,30 @@ m.solver = :glpk  # or
 m.solver = :scip
 ```
 
+## Solver Path Customization
+
+By default, RAMS assumes that solvers are available in your system's PATH with their standard names. However, you can customize the path or name for any solver using environment variables:
+
+- `RAMS_SOLVER_PATH_CBC` - Override path for CBC (defaults to `coin.cbc`)
+- `RAMS_SOLVER_PATH_CLP` - Override path for CLP (defaults to `clp`)  
+- `RAMS_SOLVER_PATH_CPLEX` - Override path for CPLEX (defaults to `cplex`)
+- `RAMS_SOLVER_PATH_GLPK` - Override path for GLPK (defaults to `glpsol`)
+- `RAMS_SOLVER_PATH_SCIP` - Override path for SCIP (defaults to `scip`)
+
+For example, if you have GLPK installed in a custom location:
+
+```bash
+export RAMS_SOLVER_PATH_GLPK=/opt/glpk/bin/glpsol
+```
+
+Or if you want to use a specific version of CBC:
+
+```bash
+export RAMS_SOLVER_PATH_CBC=/usr/local/bin/cbc-2.10
+```
+
+These environment variables are particularly useful when you have multiple versions of solvers installed or when solvers are installed in non-standard locations.
+
 ## Solver Arguments
 
 Additional solver arguments can be passed as though they are command line flags. The following adds both `--dfs` and `--bib` arguments to the GLPK invocation.

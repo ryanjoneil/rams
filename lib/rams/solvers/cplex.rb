@@ -12,7 +12,7 @@ module RAMS
       end
 
       def solver_command(model_path, solution_path, args)
-        ['cplex', '-c', "read #{model_path}"] + args + ['optimize', "write #{solution_path}"]
+        [solver_executable('cplex', 'cplex'), '-c', "read #{model_path}"] + args + ['optimize', "write #{solution_path}"]
       end
 
       private
