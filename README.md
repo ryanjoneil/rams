@@ -26,7 +26,7 @@ First make sure you have the latest RAMS installed.
 gem install rams
 ```
 
-Now install GLPK or whatever solver you wish. The command below works on Fedora
+Now install HiGHS or whatever solver you wish. The command below works on Fedora
 Linux. Consult the solver instructions for installation on your platform.
 
 ```bash
