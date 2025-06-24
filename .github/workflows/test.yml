@@ -12,7 +12,7 @@ jobs:
     container: fedora:42
     
     env:
-      RAMS_TEST_CBC: false
+      RAMS_TEST_CBC: true
       RAMS_TEST_CLP: true
       RAMS_TEST_GLPK: true
       RAMS_TEST_SCIP: true
