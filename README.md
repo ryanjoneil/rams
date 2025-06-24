@@ -1,21 +1,24 @@
 # Ruby Algebraic Modeling System
 
-![RAMS](logo.svg)
+[![Gem Version](https://badge.fury.io/rb/rams.svg?icon=si%3Arubygems)](https://badge.fury.io/rb/rams)
 
-RAMS is a library for formulating and solving [Mixed Integer Linear Programs](https://en.wikipedia.org/wiki/Integer_programming) in Ruby. Currently it supports the following open source solvers.
+![RAMS logo](logo.svg)
 
-* [CLP](https://www.coin-or.org/Clp/)
-* [CBC](https://www.coin-or.org/Cbc/)
-* [GNU Linear Programming Kit](https://www.gnu.org/software/glpk/)
-* [HiGHS](https://highs.dev/)
-* [SCIP](https://www.scipopt.org/)
+RAMS is a library for formulating and solving [Mixed Integer Linear Programs][
+  milp] in Ruby. Currently it supports the following open source solvers.
+
+* [CBC][cbc]
+* [CLP][clp]
+* [GNU Linear Programming Kit][glpk]
+* [HiGHS][highs]
+* [SCIP][scip]
 
 ## Quick start
 
 ### Installation
 
-RAMS assumes you have the solver you're using in your `PATH`. The default solver is [GLPK]((https://www.gnu.org/software/glpk/)), but you can also use [CLP](https://www.coin-or.org/Clp/), [CBC](https://www.coin-or.org/Cbc/), [HiGHS](https://highs.dev),
-and [SCIP](https://scipopt.org).
+RAMS assumes you have the solver you're using in your `PATH`. The default solver
+is HiGHS, but you can easily switch to any of the solvers listed above.
 
 First make sure you have the latest RAMS installed.
 
@@ -23,24 +26,11 @@ First make sure you have the latest RAMS installed.
 gem install rams
 ```
 
-Now install GLPK or whatever solver you wish.
-
-#### Fedora
-
-```bash
-sudo dnf install glpk-utils
-```
-
-#### Ubuntu
+Now install GLPK or whatever solver you wish. The command below works on Fedora
+Linux. Consult the solver instructions for installation on your platform.
 
 ```bash
-sudo apt-get install glpk-utils
-```
-
-#### Mac OSX
-
-```zsh
-brew install glpk
+sudo dnf install highs
 ```
 
 ### A first model
@@ -82,7 +72,8 @@ x3 = 1.0
 
 ## Modeling primitives
 
-The first class you need to instantiate is `RAMS::Model`. Everything else is created by interacting with instances of the `Model` class.
+The first class you need to instantiate is `RAMS::Model`. Everything else is
+created by interacting with instances of the `Model` class.
 
 ```ruby
 require 'rams'
@@ -92,7 +83,8 @@ m = RAMS::Model.new
 
 ### Variables
 
-Variables can be continuous (the default), integer, or binary. They are associated with an individual model.
+Variables can be continuous (the default), integer, or binary. They are
+associated with an individual model.
 
 ```ruby
 x1 = m.variable
@@ -100,7 +92,8 @@ x2 = m.variable type: :integer
 x3 = m.variable type: :binary
 ```
 
-By default, a continuous variable has a lower bound of `0` and an upper bound of `nil`, representing positive infinity.
+By default, a continuous variable has a lower bound of `0` and an upper bound of
+`nil`, representing positive infinity.
 
 ```ruby
 puts "#{m.variables.values.map { |x| [x.low, x.high ]}}"
@@ -110,13 +103,18 @@ puts "#{m.variables.values.map { |x| [x.low, x.high ]}}"
 [[0.0, nil], [0.0, nil], [0.0, nil]]
 ```
 
-To set a variable's lower bound to negative infinity, pass a `low: inf` keyword argument to the `Model.variable` method. Similarly, upper bounds can be passed in to `Model.variable` using the `high` keyword argument.
+To set a variable's lower bound to negative infinity, pass a `low: inf` keyword
+argument to the `Model.variable` method. Similarly, upper bounds can be passed
+in to `Model.variable` using the `high` keyword argument.
 
 ```ruby
 x4 = m.variable(type: :integer, low: nil, high: 10)
 ```
 
-The binary variables may appear to have an upper bound of positive infinity, but that becomes `1` when it is written to the solver. To see a model the way it is passed to a solver, use the `to_lp` method. This returns the model in [LP format](https://lpsolve.sourceforge.net/5.0/CPLEX-format.htm). Note that the variable names are different in the `to_lp` output.
+The binary variables may appear to have an upper bound of positive infinity, but
+that becomes `1` when it is written to the solver. To see a model the way it is
+passed to a solver, use the `to_lp` method. This returns the model in [LP
+format][lp]. Note that the variable names are different in the `to_lp` output.
 
 ```ruby
 puts m.to_lp
@@ -142,7 +140,8 @@ end
 
 ### Constraints
 
-Now we're ready to add some constraints. These can be done using linear inequalities and the `Model.constrain` method.
+Now we're ready to add some constraints. These can be done using linear
+inequalities and the `Model.constrain` method.
 
 ```ruby
 c1 = m.constrain(2*x1 + x2/2 <= 5)
@@ -150,7 +149,9 @@ c2 = m.constrain(x2 + x3 >= 2 - x4)
 c3 = m.constrain(x2 == 2*x3)
 ```
 
-When an inequality is instantiated, all the variables are moved into its `lhs` attribute, and the constant is stored in its `rhs` attribute. The `sense` of the inequality is also available.
+When an inequality is instantiated, all the variables are moved into its `lhs`
+attribute, and the constant is stored in its `rhs` attribute. The `sense` of the
+inequality is also available.
 
 ```ruby
 puts <<-HERE
@@ -168,7 +169,11 @@ HERE
 
 ### Objective functions
 
-The objective sense is available through the `sense` attribute. `:max` is the default. To minimize, set the sense to `:min`. Similarly, assign to the `objective` attribute to set the objective function. RAMS defaults to no objective function, or feasibility models. Explicitly setting the sense is always a good idea.
+The objective sense is available through the `sense` attribute. `:max` is the
+default. To minimize, set the sense to `:min`. Similarly, assign to the
+`objective` attribute to set the objective function. RAMS defaults to no
+objective function, or feasibility models. Explicitly setting the sense is
+always a good idea.
 
 ```ruby
 m.objective = x1 + 2*x2 + 3*x3 - x4
@@ -177,7 +182,9 @@ m.sense = :max
 
 ### Solutions
 
-To get a model solution, simply call `solve`. The `objective`, primal variable values, and dual prices can be accessed directly off of this object, along with the solution status.
+To get a model solution, simply call `solve`. The `objective`, primal variable
+values, and dual prices can be accessed directly off of this object, along with
+the solution status.
 
 ```ruby
 puts <<-HERE
@@ -197,27 +204,30 @@ y = [5.0, 0.0, 0.0]
 
 ### Verbosity
 
-If you want to see what the solver is doing, simply set `verbose` to `true` on the model before solving.
+If you want to see what the solver is doing, simply set `verbose` to `true` on
+the model before solving.
 
 ```ruby
 m.verbose = true
 solution = m.solve
 ```
 
-This should give you output line the following, depending on your model and solver. Note that the output is not streamed in real time, but merely printed after solving.
+This should give you output line the following, depending on your model and
+solver. Note that the output is not streamed in real time, but merely printed
+after solving.
 
 ```txt
-GLPSOL: GLPK LP/MIP Solver, v4.60
-Parameter(s) specified in the command line:
- --lp /var/folders/vj/t2g113b97mq1qzscqh7b8npc0000gn/T/20170126-46037-1c6k1bm.lp
- --output /var/folders/vj/t2g113b97mq1qzscqh7b8npc0000gn/T/20170126-46037-1c6k1bm.lp.sol
-Reading problem data from '/var/folders/vj/t2g113b97mq1qzscqh7b8npc0000gn/T/20170126-46037-1c6k1bm.lp'...
+Running HiGHS 1.11.0 (git hash: 364c83a51): Copyright (c) 2025 HiGHS under MIT licence terms
+Set option log_file to "HiGHS.log"
+Set option solution_file to "/tmp/20250624-180194-hu2ppg.lp.sol"
+MIP  20250624-180194-hu2ppg has 49 rows; 40 cols; 144 nonzeros; 40 integer variables (40 binary)
 [...snip...]
 ```
 
 ### Switching solvers
 
-If you want to switch to a different solver, install that solver onto your system and change the `solver` attribute on your model.
+If you want to switch to a different solver, install that solver onto your
+system and change the `solver` attribute on your model.
 
 ```ruby
 m.solver = :cbc   # or
@@ -229,7 +239,9 @@ m.solver = :scip
 
 ## Solver path customization
 
-By default, RAMS assumes that solvers are available in your system's PATH with their standard names. However, you can customize the path or name for any solver using environment variables.
+By default, RAMS assumes that solvers are available in your system's `PATH` with
+their standard names. However, you can customize the path or name for any solver
+using environment variables.
 
 * `RAMS_SOLVER_PATH_CBC` - Override path for CBC (defaults to `coin.cbc`)
 * `RAMS_SOLVER_PATH_CLP` - Override path for CLP (defaults to `clp`)  
@@ -249,13 +261,17 @@ Or if you have HiGHS installed in a custom location:
 export RAMS_SOLVER_PATH_HIGHS=/opt/highs/bin/highs
 ```
 
-These environment variables are particularly useful when you have multiple versions of solvers installed or when solvers are installed in non-standard locations.
+These environment variables are particularly useful when you have multiple
+versions of solvers installed or when solvers are installed in non-standard
+locations.
 
 ### Solver Arguments
 
-Additional solver arguments can be passed as though they are command line flags. The following adds both `--dfs` and `--bib` arguments to the GLPK invocation.
+Additional solver arguments can be passed as though they are command line flags.
+The following adds both `--dfs` and `--bib` arguments to the GLPK invocation.
 
 ```ruby
+m.solver = :glpk
 m.args = ['--dfs', '--bib']
 m.solve
 ```
@@ -270,14 +286,19 @@ Reading problem data from '/var/folders/vj/t2g113b97mq1qzscqh7b8npc0000gn/T/2017
 [...snip...]
 ```
 
-This can be used to do things like set time limits on finding solutions. For instance, we can do that with GLPK as follows.
+This can be used to do things like set time limits on finding solutions. For
+instance, we can do that with GLPK as follows.
 
 ```ruby
+m.solver = :glpk
 m.args = ['--tmlim', '3']
 m.solve
 ```
 
-For a more interesting example, if you are using SCIP, you can turn off presolving using the following configuration. This can be useful since SCIP doesn't provide dual prices for constraints that have been presolved out of the problem formulation.
+For a more interesting example, if you are using SCIP, you can turn off
+presolving using the following configuration. This can be useful since SCIP
+doesn't provide dual prices for constraints that have been presolved out of the
+problem formulation.
 
 ```ruby
 m.solver = :scip
@@ -285,7 +306,8 @@ m.args = ['-c', 'set presolving maxrounds 0']
 m.solve
 ```
 
-Similarly, if you are using HiGHS, you can set a time limit or choose a specific algorithm.
+Similarly, if you are using HiGHS, you can set a time limit or choose a specific
+algorithm.
 
 ```ruby
 m.solver = :highs
@@ -293,6 +315,17 @@ m.args = ['--time_limit', '10', '--solver', 'simplex']
 m.solve
 ```
 
-Every solver has different options, so check the manual to see what command line flags are available to you.
+Every solver has different options, so check the manual to see what command line
+flags are available to you.
 
-More modeling examples are available [in the examples folder](<https://github.com/ryanjoneil/rams/tree/master/examples>). Happy modeling!
+More modeling examples are available [in the examples folder][examples]. Happy
+modeling!
+
+[cbc]: https://www.coin-or.org/Cbc/
+[clp]: https://www.coin-or.org/Clp/
+[examples]: https://github.com/ryanjoneil/rams/tree/master/examples
+[glpk]: https://www.gnu.org/software/glpk/
+[highs]: https://highs.dev/
+[lp]: https://lpsolve.sourceforge.net/5.0/CPLEX-format.htm
+[milp]: https://en.wikipedia.org/wiki/Integer_programming
+[scip]: https://www.scipopt.org/
