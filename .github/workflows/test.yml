@@ -15,6 +15,7 @@ jobs:
       RAMS_TEST_CBC: true
       RAMS_TEST_CLP: true
       RAMS_TEST_GLPK: true
+      RAMS_TEST_HIGHS: true
       RAMS_TEST_SCIP: true
 
     steps:
@@ -32,7 +33,7 @@ jobs:
     
     - name: Install optimization solvers
       run: |
-        dnf install -y coin-or-Cbc coin-or-Clp glpk-utils scip
+        dnf install -y coin-or-Cbc coin-or-Clp coin-or-HiGHS glpk-utils scip
     
     - name: Run tests
       run: bundle exec rake test

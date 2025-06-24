@@ -2,8 +2,8 @@
 
 ## Installation
 
-RAMS assumes you have the solver you're using in your `PATH`. The default solver is [GLPK]((https://www.gnu.org/software/glpk/)), but you can also use [CLP](https://www.coin-or.org/Clp/), [CBC](https://www.coin-or.org/Cbc/), [CPLEX](https://www-01.ibm.com/software/commerce/optimization/cplex-optimizer/),
-and [SCIP](http://scip.zib.de).
+RAMS assumes you have the solver you're using in your `PATH`. The default solver is [GLPK]((https://www.gnu.org/software/glpk/)), but you can also use [CLP](https://www.coin-or.org/Clp/), [CBC](https://www.coin-or.org/Cbc/), [HiGHS](https://highs.dev),
+and [SCIP](https://scipopt.org).
 
 First make sure you have the latest RAMS installed.
 
@@ -14,11 +14,13 @@ gem install rams
 Now install GLPK or whatever solver you wish.
 
 ### Ubuntu
+
 ```
 sudo apt-get install glpk-utils
 ```
 
 ### Mac OSX
+
 ```
 brew install glpk
 ```

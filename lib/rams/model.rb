@@ -3,8 +3,8 @@ require_relative 'expression'
 require_relative 'formatters/lp'
 require_relative 'solvers/cbc'
 require_relative 'solvers/clp'
-require_relative 'solvers/cplex'
 require_relative 'solvers/glpk'
+require_relative 'solvers/highs'
 require_relative 'solvers/scip'
 require_relative 'variable'
 
@@ -38,8 +38,8 @@ module RAMS
     SOLVERS = {
       cbc: RAMS::Solvers::CBC.new,
       clp: RAMS::Solvers::CLP.new,
-      cplex: RAMS::Solvers::CPLEX.new,
       glpk: RAMS::Solvers::GLPK.new,
+      highs: RAMS::Solvers::HiGHS.new,
       scip: RAMS::Solvers::SCIP.new
     }.freeze
 

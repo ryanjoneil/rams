@@ -6,7 +6,7 @@ class TestSolverPaths < Test::Unit::TestCase
   def setup
     # Clear any existing environment variables
     @old_env_vars = {}
-    %w[CBC CLP SCIP CPLEX GLPK].each do |solver|
+    %w[CBC CLP SCIP GLPK HIGHS].each do |solver|
       env_var = "RAMS_SOLVER_PATH_#{solver}"
       @old_env_vars[env_var] = ENV[env_var]
       ENV.delete(env_var)
@@ -63,19 +63,6 @@ class TestSolverPaths < Test::Unit::TestCase
     assert_equal '/custom/path/to/scip', command[0]
   end
 
-  def test_cplex_default_solver_command
-    solver = RAMS::Solvers::CPLEX.new
-    command = solver.solver_command('/path/to/model.lp', '/path/to/solution.sol', [])
-    assert_equal 'cplex', command[0]
-  end
-
-  def test_cplex_custom_solver_command
-    ENV['RAMS_SOLVER_PATH_CPLEX'] = '/custom/path/to/cplex'
-    solver = RAMS::Solvers::CPLEX.new
-    command = solver.solver_command('/path/to/model.lp', '/path/to/solution.sol', [])
-    assert_equal '/custom/path/to/cplex', command[0]
-  end
-
   def test_glpk_default_solver_command
     solver = RAMS::Solvers::GLPK.new
     command = solver.solver_command('/path/to/model.lp', '/path/to/solution.sol', [])
@@ -87,5 +74,18 @@ class TestSolverPaths < Test::Unit::TestCase
     solver = RAMS::Solvers::GLPK.new
     command = solver.solver_command('/path/to/model.lp', '/path/to/solution.sol', [])
     assert_equal '/custom/path/to/glpsol', command[0]
+  end
+
+  def test_highs_default_solver_command
+    solver = RAMS::Solvers::HiGHS.new
+    command = solver.solver_command('/path/to/model.lp', '/path/to/solution.sol', [])
+    assert_equal 'highs', command[0]
+  end
+
+  def test_highs_custom_solver_command
+    ENV['RAMS_SOLVER_PATH_HIGHS'] = '/custom/path/to/highs'
+    solver = RAMS::Solvers::HiGHS.new
+    command = solver.solver_command('/path/to/model.lp', '/path/to/solution.sol', [])
+    assert_equal '/custom/path/to/highs', command[0]
   end
 end

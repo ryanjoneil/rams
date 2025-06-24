@@ -27,8 +27,8 @@ If you want to switch to a different solver, install that solver onto your syste
 ```ruby
 m.solver = :cbc   # or
 m.solver = :clp   # or
-m.solver = :cplex # or
 m.solver = :glpk  # or
+m.solver = :highs # or
 m.solver = :scip
 ```
 
@@ -38,8 +38,8 @@ By default, RAMS assumes that solvers are available in your system's PATH with t
 
 - `RAMS_SOLVER_PATH_CBC` - Override path for CBC (defaults to `coin.cbc`)
 - `RAMS_SOLVER_PATH_CLP` - Override path for CLP (defaults to `clp`)  
-- `RAMS_SOLVER_PATH_CPLEX` - Override path for CPLEX (defaults to `cplex`)
 - `RAMS_SOLVER_PATH_GLPK` - Override path for GLPK (defaults to `glpsol`)
+- `RAMS_SOLVER_PATH_HIGHS` - Override path for HiGHS (defaults to `highs`)
 - `RAMS_SOLVER_PATH_SCIP` - Override path for SCIP (defaults to `scip`)
 
 For example, if you have GLPK installed in a custom location:
@@ -54,6 +54,12 @@ Or if you want to use a specific version of CBC:
 export RAMS_SOLVER_PATH_CBC=/usr/local/bin/cbc-2.10
 ```
 
+Or if you have HiGHS installed in a custom location:
+
+```bash
+export RAMS_SOLVER_PATH_HIGHS=/opt/highs/bin/highs
+```
+
 These environment variables are particularly useful when you have multiple versions of solvers installed or when solvers are installed in non-standard locations.
 
 ## Solver Arguments
@@ -64,6 +70,7 @@ Additional solver arguments can be passed as though they are command line flags.
 m.args = ['--dfs', '--bib']
 m.solve
 ```
+
 ```
 GLPSOL: GLPK LP/MIP Solver, v4.60
 Parameter(s) specified in the command line:
@@ -86,6 +93,14 @@ For a more interesting example, if you are using SCIP, you can turn off presolvi
 ```ruby
 m.solver = :scip
 m.args = ['-c', 'set presolving maxrounds 0']
+m.solve
+```
+
+Similarly, if you are using HiGHS, you can set a time limit or choose a specific algorithm:
+
+```ruby
+m.solver = :highs
+m.args = ['--time_limit', '10', '--solver', 'simplex']
 m.solve
 ```
 
