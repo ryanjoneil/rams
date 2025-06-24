@@ -5,7 +5,7 @@ module RAMS
     # Interface to COIN-OR Branch-and-Cut
     class CBC < Solver
       def solver_command(model_path, solution_path, args)
-        ['cbc', model_path] + args + ['printingOptions', 'all', 'solve', 'solution', solution_path]
+        ['coin.cbc', model_path] + args + ['printingOptions', 'all', 'solve', 'solution', solution_path]
       end
 
       private
@@ -22,8 +22,7 @@ module RAMS
 
       def parse_objective(model, lines)
         return nil if lines.count < 1
-        objective = lines.first.split[-1].to_f
-        model.sense == :max ? -objective : objective
+        lines.first.split[-1].to_f
       end
 
       def parse_primal(model, lines)
@@ -36,7 +35,7 @@ module RAMS
       def parse_dual(model, lines)
         lines[1, model.constraints.count].map do |l|
           comps = l.split
-          dual = model.sense == :max ? -comps[3].to_f : comps[3].to_f
+          dual = comps[3].to_f
           [model.constraints[comps[1]], dual]
         end.to_h
       end

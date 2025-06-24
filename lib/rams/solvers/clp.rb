@@ -21,22 +21,21 @@ module RAMS
       end
 
       def parse_objective(model, lines)
-        return nil if lines.count < 2
-        objective = lines[1].split[-1].to_f
-        model.sense == :max ? -objective : objective
+        return nil if lines.count < 1
+        lines[0].split[-1].to_f
       end
 
       def parse_primal(model, lines)
-        lines[model.constraints.count + 2, model.variables.count].map do |l|
+        lines[model.constraints.count + 1, model.variables.count].map do |l|
           comps = l.split
           [model.variables[comps[1]], comps[2].to_f]
         end.to_h
       end
 
       def parse_dual(model, lines)
-        lines[2, model.constraints.count].map do |l|
+        lines[1, model.constraints.count].map do |l|
           comps = l.split
-          dual = model.sense == :max ? -comps[3].to_f : comps[3].to_f
+          dual = comps[3].to_f
           [model.constraints[comps[1]], dual]
         end.to_h
       end

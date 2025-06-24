@@ -28,9 +28,9 @@ module RAMS
       end
 
       def parse_objective(_model, lines)
-        status = (lines.select { |l| l =~ /^objective value:/ }.first || '').split
-        return nil if status.size < 3
-        status[2].to_f
+        objective = (lines.select { |l| l =~ /^objective value:/ }.first || '').split
+        return nil if objective.size < 3
+        objective[2].to_f
       end
 
       def parse_primal(model, lines)

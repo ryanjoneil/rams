@@ -1,0 +1,38 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: fedora:42
+    
+    env:
+      RAMS_TEST_CBC: true
+      RAMS_TEST_CLP: true
+      RAMS_TEST_GLPK: true
+      RAMS_TEST_SCIP: true
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install system dependencies
+      run: |
+        dnf update -y
+        dnf install -y ruby ruby-devel gcc gcc-c++ make redhat-rpm-config
+    
+    - name: Set up Ruby environment
+      run: |
+        gem install bundler -v '2.6.9'
+        bundle install
+    
+    - name: Install optimization solvers
+      run: |
+        dnf install -y coin-or-Cbc coin-or-Clp glpk-utils scip
+    
+    - name: Run tests
+      run: bundle exec rake test
