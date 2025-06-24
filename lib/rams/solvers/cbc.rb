@@ -5,7 +5,7 @@ module RAMS
     # Interface to COIN-OR Branch-and-Cut
     class CBC < Solver
       def solver_command(model_path, solution_path, args)
-        ['cbc', model_path] + args + ['printingOptions', 'all', 'solve', 'solution', solution_path]
+        ['coin.cbc', model_path] + args + ['printingOptions', 'all', 'solve', 'solution', solution_path]
       end
 
       private
