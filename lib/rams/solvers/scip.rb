@@ -11,7 +11,7 @@ module RAMS
       end
 
       def solver_command(model_path, _solution_path, args)
-        ['scip', '-c', "read #{model_path}"] + args +
+        [solver_executable('scip', 'scip'), '-c', "read #{model_path}"] + args +
           ['-c', 'optimize', '-c', 'display solution', '-c', 'display dualsolution', '-c', 'quit']
       end
 

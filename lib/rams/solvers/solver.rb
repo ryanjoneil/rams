@@ -60,6 +60,11 @@ module RAMS
         raise NotImplementedError
       end
 
+      # Get solver executable name, checking environment variable first
+      def solver_executable(default_name, solver_name)
+        ENV["RAMS_SOLVER_PATH_#{solver_name.upcase}"] || default_name
+      end
+
       def parse_solution(model, solution_text)
         lines = solution_text.split "\n"
         RAMS::Solution.new(
