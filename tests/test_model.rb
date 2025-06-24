@@ -7,7 +7,6 @@ class TestModel < Test::Unit::TestCase
   def test_simple_primal
     run_test_simple_primal :cbc if ENV['RAMS_TEST_CBC']
     run_test_simple_primal :clp if ENV['RAMS_TEST_CLP']
-    run_test_simple_primal :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_simple_primal :glpk if ENV['RAMS_TEST_GLPK']
     run_test_simple_primal :highs if ENV['RAMS_TEST_HIGHS']
     run_test_simple_primal :scip if ENV['RAMS_TEST_SCIP']
@@ -16,7 +15,6 @@ class TestModel < Test::Unit::TestCase
   def test_simple_dual
     run_test_simple_dual :cbc if ENV['RAMS_TEST_CBC']
     run_test_simple_dual :clp if ENV['RAMS_TEST_CLP']
-    run_test_simple_dual :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_simple_dual :glpk if ENV['RAMS_TEST_GLPK']
     run_test_simple_dual :highs if ENV['RAMS_TEST_HIGHS']
   end
@@ -24,7 +22,6 @@ class TestModel < Test::Unit::TestCase
 
   def test_binary
     run_test_binary :cbc if ENV['RAMS_TEST_CBC']
-    run_test_binary :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_binary :glpk if ENV['RAMS_TEST_GLPK']
     run_test_binary :highs if ENV['RAMS_TEST_HIGHS']
     run_test_binary :scip if ENV['RAMS_TEST_SCIP']
@@ -32,7 +29,6 @@ class TestModel < Test::Unit::TestCase
 
   def test_integer
     run_test_integer :cbc if ENV['RAMS_TEST_CBC']
-    run_test_integer :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_integer :glpk if ENV['RAMS_TEST_GLPK']
     run_test_integer :highs if ENV['RAMS_TEST_HIGHS']
     run_test_integer :scip if ENV['RAMS_TEST_SCIP']
@@ -41,7 +37,6 @@ class TestModel < Test::Unit::TestCase
   def test_infeasible
     run_test_infeasible :cbc if ENV['RAMS_TEST_CBC']
     run_test_infeasible :clp if ENV['RAMS_TEST_CLP']
-    run_test_infeasible :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_infeasible :glpk if ENV['RAMS_TEST_GLPK']
     run_test_infeasible :highs if ENV['RAMS_TEST_HIGHS']
     run_test_infeasible :scip if ENV['RAMS_TEST_SCIP']
@@ -50,7 +45,6 @@ class TestModel < Test::Unit::TestCase
   def test_unbounded
     run_test_unbounded :cbc if ENV['RAMS_TEST_CBC']
     run_test_unbounded :clp if ENV['RAMS_TEST_CLP']
-    run_test_unbounded :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_unbounded :glpk if ENV['RAMS_TEST_GLPK']
     run_test_unbounded :highs if ENV['RAMS_TEST_HIGHS']
     run_test_unbounded :scip if ENV['RAMS_TEST_SCIP']
@@ -58,7 +52,6 @@ class TestModel < Test::Unit::TestCase
 
   def test_implication
     run_test_implication :cbc if ENV['RAMS_TEST_CBC']
-    run_test_implication :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_implication :glpk if ENV['RAMS_TEST_GLPK']
     run_test_implication :highs if ENV['RAMS_TEST_HIGHS']
     run_test_implication :scip if ENV['RAMS_TEST_SCIP']

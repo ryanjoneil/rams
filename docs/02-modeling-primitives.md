@@ -23,6 +23,7 @@ By default, a continuous variable has a lower bound of `0` and an upper bound of
 ```ruby
 puts "#{m.variables.values.map { |x| [x.low, x.high ]}}"
 ```
+
 ```
 [[0.0, nil], [0.0, nil], [0.0, nil]]
 ```
@@ -33,11 +34,12 @@ To set a variable's lower bound to negative infinity, pass a `low: inf` keyword 
 x4 = m.variable(type: :integer, low: nil, high: 10)
 ```
 
-The binary variables may appear to have an upper bound of positive infinity, but that becomes `1` when it is written to the solver. To see a model the way it is passed to a solver, use the `to_lp` method. This returns the model in [LP format](http://lpsolve.sourceforge.net/5.0/CPLEX-format.htm). Note that the variable names are different in the `to_lp` output.
+The binary variables may appear to have an upper bound of positive infinity, but that becomes `1` when it is written to the solver. To see a model the way it is passed to a solver, use the `to_lp` method. This returns the model in [LP format](https://lpsolve.sourceforge.net/5.0/CPLEX-format.htm). Note that the variable names are different in the `to_lp` output.
 
 ```ruby
 puts m.to_lp
 ```
+
 ```
 max
   obj: 0 v1
@@ -75,6 +77,7 @@ puts <<-HERE
 #{c3.lhs[x2]} * x2 + #{c3.lhs[x3]} #{c3.sense} #{c3.rhs}
 HERE
 ```
+
 ```
 2.0 * x1 + 0.5 * x2 <= 5.0
 1.0 * x2 + 1.0 * x3 + 1.0 * x4 >= 2.0
@@ -101,6 +104,7 @@ x = #{[x1, x2, x3, x4].map { |x| solution[x] }}
 y = #{[c1, c2, c3].map { |c| solution.dual[c] }}
 HERE
 ```
+
 ```
 z = 10.0
 x = [2.0, 2.0, 1.0, -1.0]

@@ -27,7 +27,6 @@ If you want to switch to a different solver, install that solver onto your syste
 ```ruby
 m.solver = :cbc   # or
 m.solver = :clp   # or
-m.solver = :cplex # or
 m.solver = :glpk  # or
 m.solver = :highs # or
 m.solver = :scip
@@ -39,7 +38,6 @@ By default, RAMS assumes that solvers are available in your system's PATH with t
 
 - `RAMS_SOLVER_PATH_CBC` - Override path for CBC (defaults to `coin.cbc`)
 - `RAMS_SOLVER_PATH_CLP` - Override path for CLP (defaults to `clp`)  
-- `RAMS_SOLVER_PATH_CPLEX` - Override path for CPLEX (defaults to `cplex`)
 - `RAMS_SOLVER_PATH_GLPK` - Override path for GLPK (defaults to `glpsol`)
 - `RAMS_SOLVER_PATH_HIGHS` - Override path for HiGHS (defaults to `highs`)
 - `RAMS_SOLVER_PATH_SCIP` - Override path for SCIP (defaults to `scip`)
@@ -72,6 +70,7 @@ Additional solver arguments can be passed as though they are command line flags.
 m.args = ['--dfs', '--bib']
 m.solve
 ```
+
 ```
 GLPSOL: GLPK LP/MIP Solver, v4.60
 Parameter(s) specified in the command line:
