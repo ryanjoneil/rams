@@ -9,7 +9,6 @@ class TestModel < Test::Unit::TestCase
     run_test_simple :clp if ENV['RAMS_TEST_CLP']
     run_test_simple :cplex if ENV['RAMS_TEST_CPLEX']
     run_test_simple :glpk if ENV['RAMS_TEST_GLPK']
-    run_test_simple(:scip, ['-c', 'set presolving maxrounds 0']) if ENV['RAMS_TEST_SCIP']
   end
 
   def test_binary

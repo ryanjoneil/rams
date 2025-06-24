@@ -22,8 +22,7 @@ module RAMS
 
       def parse_objective(model, lines)
         return nil if lines.count < 1
-        objective = lines.first.split[-1].to_f
-        model.sense == :max ? -objective : objective
+        lines.first.split[-1].to_f
       end
 
       def parse_primal(model, lines)
@@ -36,7 +35,7 @@ module RAMS
       def parse_dual(model, lines)
         lines[1, model.constraints.count].map do |l|
           comps = l.split
-          dual = model.sense == :max ? -comps[3].to_f : comps[3].to_f
+          dual = comps[3].to_f
           [model.constraints[comps[1]], dual]
         end.to_h
       end
