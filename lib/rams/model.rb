@@ -26,7 +26,7 @@ module RAMS
   #
   #   m.sense = :max
   #   m.objective = (x1 + (2 * x2))
-  #   m.solver = :glpk
+  #   m.solver = :highs
   #   m.verbose = true
   #   m.solve
   #
@@ -44,7 +44,7 @@ module RAMS
     }.freeze
 
     def initialize
-      @solver = :glpk
+      @solver = :highs
       @sense = :max
       @objective = nil
       @verbose = false
