@@ -109,7 +109,7 @@ puts "#{m.variables.values.map { |x| [x.low, x.high ]}}"
 [[0.0, nil], [0.0, nil], [0.0, nil]]
 ```
 
-To set a variable's lower bound to negative infinity, pass a `low: inf` keyword
+To set a variable's lower bound to negative infinity, pass a `low: nil` keyword
 argument to the `Model.variable` method. Similarly, upper bounds can be passed
 in to `Model.variable` using the `high` keyword argument.
 
@@ -193,6 +193,7 @@ values, and dual prices can be accessed directly off of this object, along with
 the solution status.
 
 ```ruby
+solution = m.solve
 puts <<-HERE
 z = #{solution.objective}
 x = #{[x1, x2, x3, x4].map { |x| solution[x] }}
