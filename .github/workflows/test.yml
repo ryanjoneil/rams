@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: fedora:42
+    container: fedora:45
     
     env:
       RAMS_TEST_CBC: true
@@ -19,16 +19,17 @@ jobs:
       RAMS_TEST_SCIP: true
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     
     - name: Install system dependencies
       run: |
         dnf update -y
-        dnf install -y ruby ruby-devel gcc gcc-c++ make redhat-rpm-config
+        dnf install -y ruby ruby-devel rubygem-bundler gcc gcc-c++ make redhat-rpm-config
     
     - name: Set up Ruby environment
       run: |
-        gem install bundler -v '2.6.9'
+        ruby -v
+        bundle -v
         bundle install
     
     - name: Install optimization solvers
