@@ -16,6 +16,7 @@ jobs:
       RAMS_TEST_GLPK: true
       RAMS_TEST_HIGHS: true
       RAMS_TEST_SCIP: true
+      HIGHS_VERSION: 1.16.0
 
     steps:
     - uses: actions/checkout@v7
@@ -33,7 +34,15 @@ jobs:
     
     - name: Install optimization solvers
       run: |
-        dnf install -y coin-or-Cbc coin-or-Clp coin-or-HiGHS glpk-utils scip
+        dnf install -y coin-or-Cbc coin-or-Clp glpk-utils scip
+        # HiGHS from upstream, since Fedora lags behind the latest release.
+        tarball="highs-${HIGHS_VERSION}-x86_64-linux-gnu-static-mit.tar.gz"
+        curl -fsSL -o "$tarball" "https://github.com/ERGO-Code/HiGHS/releases/download/v${HIGHS_VERSION}/${tarball}"
+        echo "efff37587a1af0a1c7086be7a232c19de3b545f62fb7e2f19cd49b37c7718fe1  $tarball" | sha256sum -c -
+        mkdir -p /opt/highs
+        tar -xzf "$tarball" -C /opt/highs
+        ln -s /opt/highs/bin/highs /usr/local/bin/highs
+        highs --version
     
     - name: Run tests
       run: bundle exec rake test
