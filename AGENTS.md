@@ -126,4 +126,4 @@ Releases are published by hand:
 6. Create the GitHub release from that tag, using the changelog section as
    notes.
 
-Tags look like `v0.2.0`. Version 0.2.1 was published without a tag.
+Tags look like `v0.2.0`.
