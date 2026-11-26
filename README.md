@@ -5,13 +5,16 @@
 ![RAMS logo](logo.svg)
 
 RAMS is a library for formulating and solving [Mixed Integer Linear Programs][
-  milp] in Ruby. Currently it supports the following open source solvers.
+  milp] in Ruby. Currently it supports the following open source solvers. The
+versions listed are the ones RAMS is tested against.
 
-* [CBC][cbc]
-* [CLP][clp]
-* [GNU Linear Programming Kit][glpk]
-* [HiGHS][highs]
-* [SCIP][scip]
+* [CBC][cbc] 2.10.13
+* [CLP][clp] 1.17.11
+* [GNU Linear Programming Kit][glpk] 5.0
+* [HiGHS][highs] 1.16.0
+* [SCIP][scip] 10.1.0
+
+RAMS requires Ruby 3.1 or later and is tested on Ruby 4.0.
 
 ## Quick start
 
@@ -30,8 +33,11 @@ Now install HiGHS or whatever solver you wish. The command below works on Fedora
 Linux. Consult the solver instructions for installation on your platform.
 
 ```bash
-sudo dnf install highs
+sudo dnf install coin-or-HiGHS
 ```
+
+Fedora's package may lag behind the latest HiGHS release. Prebuilt binaries of
+the latest version are available on the [HiGHS releases page][highs-releases].
 
 ### A first model
 
@@ -103,7 +109,7 @@ puts "#{m.variables.values.map { |x| [x.low, x.high ]}}"
 [[0.0, nil], [0.0, nil], [0.0, nil]]
 ```
 
-To set a variable's lower bound to negative infinity, pass a `low: inf` keyword
+To set a variable's lower bound to negative infinity, pass a `low: nil` keyword
 argument to the `Model.variable` method. Similarly, upper bounds can be passed
 in to `Model.variable` using the `high` keyword argument.
 
@@ -187,6 +193,7 @@ values, and dual prices can be accessed directly off of this object, along with
 the solution status.
 
 ```ruby
+solution = m.solve
 puts <<-HERE
 z = #{solution.objective}
 x = #{[x1, x2, x3, x4].map { |x| solution[x] }}
@@ -197,8 +204,13 @@ HERE
 ```txt
 z = 10.0
 x = [2.0, 2.0, 1.0, -1.0]
-y = [5.0, 0.0, 0.0]
+y = [nil, nil, nil]
 ```
+
+Dual prices are only meaningful for linear programs. This model has integer and
+binary variables, so HiGHS doesn't report any and `solution.dual` is empty. For
+a model with only continuous variables, `solution.dual` maps each constraint to
+its dual price.
 
 ## Solver configuration
 
@@ -212,15 +224,16 @@ m.verbose = true
 solution = m.solve
 ```
 
-This should give you output line the following, depending on your model and
+This should give you output like the following, depending on your model and
 solver. Note that the output is not streamed in real time, but merely printed
 after solving.
 
 ```txt
-Running HiGHS 1.11.0 (git hash: 364c83a51): Copyright (c) 2025 HiGHS under MIT licence terms
-Set option log_file to "HiGHS.log"
-Set option solution_file to "/tmp/20250624-180194-hu2ppg.lp.sol"
-MIP  20250624-180194-hu2ppg has 49 rows; 40 cols; 144 nonzeros; 40 integer variables (40 binary)
+Running HiGHS 1.16.0 (git hash: f3f113d): Copyright (c) 2026 under MIT licence terms
+Includes third-party software components, see THIRD_PARTY_NOTICES.md for full details
+Command line parsed using CLI11 2.5.0: Copyright (c) 2017-2025 University of Cincinnati
+Set option solution_file to "/tmp/20261124-1-dwg0ih.lp.sol"
+MIP 20261124-1-dwg0ih has 3 rows; 4 cols; 7 nonzeros; 3 integer variables (1 binary)
 [...snip...]
 ```
 
@@ -244,7 +257,7 @@ their standard names. However, you can customize the path or name for any solver
 using environment variables.
 
 * `RAMS_SOLVER_PATH_CBC` - Override path for CBC (defaults to `coin.cbc`)
-* `RAMS_SOLVER_PATH_CLP` - Override path for CLP (defaults to `clp`)  
+* `RAMS_SOLVER_PATH_CLP` - Override path for CLP (defaults to `clp`)
 * `RAMS_SOLVER_PATH_GLPK` - Override path for GLPK (defaults to `glpsol`)
 * `RAMS_SOLVER_PATH_HIGHS` - Override path for HiGHS (defaults to `highs`)
 * `RAMS_SOLVER_PATH_SCIP` - Override path for SCIP (defaults to `scip`)
@@ -277,12 +290,11 @@ m.solve
 ```
 
 ```txt
-GLPSOL: GLPK LP/MIP Solver, v4.60
+GLPSOL--GLPK LP/MIP Solver 5.0
 Parameter(s) specified in the command line:
- --lp /var/folders/vj/t2g113b97mq1qzscqh7b8npc0000gn/T/20170126-46037-crkxuo.lp
- --output /var/folders/vj/t2g113b97mq1qzscqh7b8npc0000gn/T/20170126-46037-crkxuo.lp.sol
- --dfs --bib
-Reading problem data from '/var/folders/vj/t2g113b97mq1qzscqh7b8npc0000gn/T/20170126-46037-crkxuo.lp'...
+ --lp /tmp/20261124-1-hc7q01.lp --output /tmp/20261124-1-hc7q01.lp.sol --dfs
+ --bib
+Reading problem data from '/tmp/20261124-1-hc7q01.lp'...
 [...snip...]
 ```
 
@@ -323,9 +335,10 @@ modeling!
 
 [cbc]: https://www.coin-or.org/Cbc/
 [clp]: https://www.coin-or.org/Clp/
-[examples]: https://github.com/ryanjoneil/rams/tree/master/examples
+[examples]: https://github.com/ryanjoneil/rams/tree/main/examples
 [glpk]: https://www.gnu.org/software/glpk/
 [highs]: https://highs.dev/
+[highs-releases]: https://github.com/ERGO-Code/HiGHS/releases
 [lp]: https://lpsolve.sourceforge.net/5.0/CPLEX-format.htm
 [milp]: https://en.wikipedia.org/wiki/Integer_programming
 [scip]: https://www.scipopt.org/
